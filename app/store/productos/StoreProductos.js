@@ -5,7 +5,7 @@ Ext.define('app.store.productos.StoreProductos', {
     proxy: {
         type: 'ajax',
         method: 'GET',
-        url: Sales.Config.HOME_URL + '/cliente/listarClientes',
+        url: Sales.Config.HOME_URL + '/producto/listarProductos',
         reader: {
             type: 'json',
             rootProperty: 'data',

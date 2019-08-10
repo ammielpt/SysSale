@@ -12,7 +12,7 @@ $var = new App();
     <head>
         <meta charset="UTF-8">
 
-        <title>app</title>
+        <title>Sistemas de Ventas</title>
 
         <script type="text/javascript">
             Sales = {};

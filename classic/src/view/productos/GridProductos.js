@@ -10,13 +10,13 @@ Ext.define('app.view.productos.GridProductos', {
         Ext.apply(this, {
             store: mystore,
             columns: [
-                {text: 'Nombre', dataIndex: 'razonSocial', width: 300, flex: 1},
-                {text: 'Categoría', dataIndex: 'razonSocial', width: 150},
-                {text: 'Precio', dataIndex: 'ruc', width: 150},
-                {text: 'Fecha de alta', dataIndex: 'direccion', width: 120},
-                {text: 'Peso', dataIndex: 'peso', width: 100},
-                {text: 'Nominación', dataIndex: 'nominacion', width: 150},
-                {text: 'Stock', dataIndex: 'direccion', width: 100},
+                {text: 'Descripción', dataIndex: 'nombre', width: 300, flex: 1},
+                {text: 'Precio', dataIndex: 'precio', width: 150},
+                {text: 'Categoria', dataIndex: 'idCategoria', width: 150},
+                {text: 'Peso', dataIndex: 'peso', width: 120, hidden: true},
+                {text: 'Fecha alta', dataIndex: 'fechaAlta', width: 100},
+                {text: 'Stock', dataIndex: 'stock', width: 100},
+                {text: 'Nominación', dataIndex: 'idNominacion', width: 100},
                 {
                     xtype: 'actioncolumn',
                     width: 80,
@@ -27,16 +27,16 @@ Ext.define('app.view.productos.GridProductos', {
                                 var rec = grid.getStore().getAt(rowIndex);
                                 var win = Ext.create('Ext.Window', {
                                     modal: true,
-                                    title: "Actualizar cliente",
+                                    title: "Actualizar producto",
                                     height: 580,
                                     width: 700,
                                     y: 0,
-                                    items: [Ext.create('app.view.clientes.form.FormCliente', {record: rec})],
+                                    items: [Ext.create('app.view.productos.form.FormProducto', {record: rec})],
                                     buttons: [
                                         {
                                             text: 'Actualizar',
                                             handler: function () {
-                                                var form = this.up('window').down('formcliente');
+                                                var form = this.up('window').down('formproducto');
                                                 if (form.isValid())
                                                     form.doUpdate(form.getValues(), win, mystore);
                                             }
@@ -54,7 +54,7 @@ Ext.define('app.view.productos.GridProductos', {
                         }, {
                             icon: 'resources/icon/delete_icon.png',
                             tooltip: 'Eliminar',
-                            handler: 'eliminarCliente'
+                            handler: 'eliminarProducto'
                         }]
                 }
             ],
@@ -74,16 +74,16 @@ Ext.define('app.view.productos.GridProductos', {
                 handler: function () {
                     var win = Ext.create('Ext.Window', {
                         modal: true,
-                        title: "Agregar Nuevo",
-                        height: 580,
-                        width: 700,
+                        title: "Agregar Producto",
+                        height: 450,
+                        width: 650,
                         y: 0,
-                        items: [Ext.create('app.view.clientes.form.FormCliente')],
+                        items: [Ext.create('app.view.productos.form.FormProducto')],
                         buttons: [
                             {
                                 text: 'Guardar',
                                 handler: function () {
-                                    var form = this.up('window').down('formcliente');
+                                    var form = this.up('window').down('formproducto');
                                     if (form.isValid()) {
                                         if (!form.getRecord())
                                             form.doSubmit(form.getValues(), win, mystore);
@@ -103,100 +103,19 @@ Ext.define('app.view.productos.GridProductos', {
                     });
                     win.show();
                 }
-            }, '-', {
-                text: 'Correos',
-                iconCls: 'fa fa-envelope',
-                handler: function () {
-                    var record = me.getSelectionModel().getSelection();
-                    if (!record[0]) {
-                        Ext.Msg.alert("Mensaje", "Por favor seleccione un registro de cliente");
-                        return;
-                    }
-                    var win = Ext.create('Ext.Window', {
-                        modal: true,
-                        title: "Lista de Correos: " + record[0].get('razonSocial'),
-                        height: 380,
-                        width: 500,
-                        y: 0,
-                        items: [Ext.create('app.view.clientes.correos.GridCorreos', {rcdCliente: record[0]})],
-                        buttons: [
-                            {
-                                text: 'Cerrar',
-                                handler: function () {
-                                    win.close();
-                                }
-                            }
-                        ]
-                    });
-                    win.show();
-                }
-            }, '-', {
-                text: 'Enviar correo',
-                iconCls: 'fa fa-paperclip',
-                handler: function () {
-                    var winpdf1 = new Ext.Window({
-                        title: 'Escribe tu mensaje',
-                        width: 550,
-                        height: 250,
-                        modal: true,
-                        buttons: [
-                            {
-                                text: 'Cancelar',
-                                handler: function () {
-                                    winpdf1.close();
-                                }
-                            },
-                            {
-                                text: 'Enviar'
-                            }
-                        ],
-                        items: [
-                            {
-                                xtype: 'htmleditor'
-                            }
-                        ]
-                    });
-                    winpdf1.show();
-                }
-            },
+            }, 
             '->', {
                 text: 'Exportar Excel',
                 iconCls: 'fa fa-download',
                 handler: function () {
-                    Ext.Msg.confirm('Mensaje', 'Desea exportar la informacion de clientes en formato excel?', function (respuesta) {
+                    Ext.Msg.confirm('Mensaje', 'Desea exportar la informacion de productos en formato excel?', function (respuesta) {
                         if (respuesta == 'yes') {
-                            window.open(Sales.Config.HOME_URL + '/cliente/reporteClienteExcel', "_self");
+                            window.open(Sales.Config.HOME_URL + '/producto/reporteProductoExcel', "_self");
                         }
                     });
                 }
             },
-            '-', {
-                text: 'Exportar PDF',
-                iconCls: 'fa fa-file-pdf-o',
-                handler: function () {
-                    var record = me.getSelectionModel().getSelection();
-                    if (!record[0]) {
-                        Ext.Msg.alert("Mensaje", "Por favor seleccione un registro de cliente");
-                        return;
-                    }
-                    var winpdf1 = new Ext.Window({
-                        title: 'PDF Content: ' + record[0].get('razonSocial'),
-                        width: 800,
-                        height: 600,
-                        plain: true,
-                        modal: true,
-                        items: {
-                            xtype: 'component',
-                            autoEl: {
-                                tag: 'iframe',
-                                style: 'height: 100%; width: 100%; border: none',
-                                src: Sales.Config.HOME_URL + '/cliente/generarReportePDFCliente/' + record[0].get('idCliente')
-                            }
-                        }
-                    });
-                    winpdf1.show();
-                }
-            }, '-', {
+            '-',{
                 text: 'Adjuntar documentos',
                 iconCls: 'fa fa-paperclip',
                 handler: function () {
@@ -207,7 +126,7 @@ Ext.define('app.view.productos.GridProductos', {
                     }
                     var win = Ext.create('Ext.Window', {
                         modal: true,
-                        title: "Adjuntar documento: " + record[0].get('razonSocial'),
+                        title: "Adjuntar documento: " + record[0].get('nombre'),
                         height: 380,
                         width: 600,
                         y: 0,

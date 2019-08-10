@@ -127,7 +127,8 @@
         "app.store.productos.StoreProductos": "app/store/productos/StoreProductos.js",
         "app.view.productos.GridProductos": "classic/src/view/productos/GridProductos.js",
         "app.model.productos.ProductoModel": "app/model/productos/ProductoModel.js",
-        "app.view.productos.ProductoController": "app/view/productos/ProductoController.js"
+        "app.view.productos.ProductoController": "app/view/productos/ProductoController.js",
+        "app.view.productos.form.FormProducto": "classic/src/view/productos/form/FormProducto.js"
     },
     "classes": {
         "Ext.AbstractManager": {

@@ -11,7 +11,7 @@ $var = new App();
 ?>
 <html lang = "en">
     <head>
-        <title>Tutorialspoint.com</title>
+        <title>::Login::</title>
         <link href = "resources/login/login.css" rel = "stylesheet">        
         <script>
             function hacerLogin() {
