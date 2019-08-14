@@ -15,11 +15,11 @@ class Producto extends Controller {
     function crearProducto() {
         $nombre = $_POST['nombre'];
         $precio = $_POST['precio'];        
-        $idCategoria = 1;
+        $idCategoria = $_POST['idCategoria'];
         $peso = $_POST['peso'];        
         $fechaAlta = $_POST['fechaAlta'];
         $stock = $_POST['stock'];
-        $idNominacion = 1;
+        $idNominacion = $_POST['idNominacion'];
         $mensaje = "";
         $producto = $this->model->insertarProducto([
             "nombre" => $nombre,
@@ -117,17 +117,21 @@ class Producto extends Controller {
 
     function actualizarProducto() {
         $flag = false;
-        $idCliente = $_POST['idCliente'];
-        $razonSocial = $_POST['razonSocial'];
-        $ruc = $_POST['ruc'];
-        $direccion = $_POST['direccion'];
-        $fechaNacimiento = $_POST['fechaNacimiento'];
-        if ($this->model->update(['idCliente' => $idCliente, 'razonSocial' => $razonSocial, 'ruc' => $ruc, 'direccion' => $direccion, 'fechaNacimiento' => $fechaNacimiento])) {
-            $mensaje = "Cliente actualizado correctamente";
+        $idProducto = $_POST['idProducto'];
+        $nombre = $_POST['nombre'];
+        $precio = $_POST['precio'];        
+        $idCategoria = $_POST['idCategoria'];
+        $peso = $_POST['peso'];        
+        $fechaAlta = $_POST['fechaAlta'];
+        $stock = $_POST['stock'];
+        $idNominacion = $_POST['idNominacion'];
+        $mensaje = "";
+        if ($this->model->update(['idProducto' => $idProducto, 'nombre' => $nombre, 'precio' => $precio, 'idCategoria' => $idCategoria, 'fechaNacimiento' => $fechaNacimiento])) {
+            $mensaje = "Producto actualizado correctamente";
             $flag = true;
         } else {
             //Mensaje de error
-            $mensaje = "Nose pudo actualizar el cliente";
+            $mensaje = "Nose pudo actualizar el producto";
         }
         $data = ["mensaje" => $mensaje, "success" => $flag];
         header('Content-Type: application/json');
