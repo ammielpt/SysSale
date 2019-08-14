@@ -2,10 +2,10 @@ Ext.define('app.view.productos.form.FormProducto', {
     extend: 'Ext.form.Panel',
     xtype: 'formproducto',
     bodyPadding: 10,
-    initComponent: function () {
+    initComponent: function() {
         var me = this,
-        categoriaStore= Ext.create('app.store.productos.StoreCategorias'),
-        nominacionStore= Ext.create('app.store.productos.StoreNominaciones');
+            categoriaStore = Ext.create('app.store.productos.StoreCategorias', { autoLoad: true }),
+            nominacionStore = Ext.create('app.store.productos.StoreNominaciones', { autoLoad: true });
         Ext.apply(this, {
             fieldDefaults: {
                 labelAlign: 'right',
@@ -14,8 +14,7 @@ Ext.define('app.view.productos.form.FormProducto', {
                 anchor: '100%',
                 allowBlank: false
             },
-            items: [
-                {
+            items: [{
                     xtype: 'textfield',
                     fieldLabel: 'ID',
                     labelAlign: 'top',
@@ -36,8 +35,7 @@ Ext.define('app.view.productos.form.FormProducto', {
                         labelAlign: 'top',
                         flex: 1
                     },
-                    items: [
-                        {
+                    items: [{
                             xtype: 'numberfield',
                             fieldLabel: 'Precio',
                             name: 'precio',
@@ -51,7 +49,19 @@ Ext.define('app.view.productos.form.FormProducto', {
                             displayField: 'nombreCategoria',
                             valueField: 'idCategoria',
                             editable: false,
-                            allowBlank: true
+                            allowBlank: true,
+                            listeners: {
+                                scope: me,
+                                afterrender: function(cbo) {
+                                    categoriaStore.on('load', function() {
+                                        categoriaStore.each(function(rcd) {
+                                            if (cbo.getValue() == rcd.get('idCategoria')) {
+                                                cbo.setRawValue(rcd.get('nombreCategoria'));
+                                            }
+                                        });
+                                    });
+                                }
+                            }
                         }
                     ]
                 },
@@ -62,8 +72,7 @@ Ext.define('app.view.productos.form.FormProducto', {
                         labelAlign: 'top',
                         flex: 1
                     },
-                    items: [
-                        {
+                    items: [{
                             xtype: 'numberfield',
                             fieldLabel: 'Stock',
                             name: 'stock',
@@ -77,7 +86,19 @@ Ext.define('app.view.productos.form.FormProducto', {
                             displayField: 'nombreNominacion',
                             valueField: 'idNominacion',
                             editable: false,
-                            allowBlank: true
+                            allowBlank: true,
+                            listeners: {
+                                scope: me,
+                                afterrender: function(cbo) {
+                                    nominacionStore.on('load', function() {
+                                        nominacionStore.each(function(rcd) {
+                                            if (cbo.getValue() == rcd.get('idNominacion')) {
+                                                cbo.setRawValue(rcd.get('nombreNominacion'));
+                                            }
+                                        });
+                                    });
+                                }
+                            }
                         }
                     ]
                 },
@@ -88,8 +109,7 @@ Ext.define('app.view.productos.form.FormProducto', {
                         labelAlign: 'top',
                         flex: 1
                     },
-                    items: [
-                        {
+                    items: [{
                             xtype: 'numberfield',
                             fieldLabel: 'Peso',
                             name: 'peso',
@@ -113,31 +133,31 @@ Ext.define('app.view.productos.form.FormProducto', {
         if (me.record)
             me.loadRecord(me.record);
     },
-    doSubmit: function (values, win, store) {
+    doSubmit: function(values, win, store) {
         var rcd, me = this;
         Ext.Ajax.request({
             url: Sales.Config.HOME_URL + '/producto/crearProducto',
             params: values,
             method: 'POST',
-            success: function (response, opts) {
+            success: function(response, opts) {
                 var obj = Ext.decode(response.responseText);
                 Ext.Msg.alert('Mensaje', obj.mensaje);
                 rcd = Ext.create('app.model.productos.ProductoModel', obj.data);
                 store.add(rcd);
                 me.loadRecord(rcd);
             },
-            failure: function (response, opts) {
+            failure: function(response, opts) {
                 console.log('server-side failure with status code ' + response.status);
             }
         });
     },
-    doUpdate: function (values, win, store) {
+    doUpdate: function(values, win, store) {
         var me = this;
         Ext.Ajax.request({
             url: Sales.Config.HOME_URL + '/producto/actualizarProducto',
             params: values,
             method: 'POST',
-            success: function (response, opts) {
+            success: function(response, opts) {
                 var obj = Ext.decode(response.responseText);
                 if (obj.success) {
                     Ext.Msg.alert('Mensaje', obj.mensaje);
@@ -146,7 +166,7 @@ Ext.define('app.view.productos.form.FormProducto', {
                     me.record.commit();
                 }
             },
-            failure: function (response, opts) {
+            failure: function(response, opts) {
                 console.log('server-side failure with status code ' + response.status);
             }
         });
