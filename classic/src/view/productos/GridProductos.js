@@ -14,7 +14,8 @@ Ext.define('app.view.productos.GridProductos', {
                 {text: 'Precio', dataIndex: 'precio', width: 150},
                 {text: 'Categoria', dataIndex: 'idCategoria', width: 150},
                 {text: 'Peso', dataIndex: 'peso', width: 120, hidden: true},
-                {text: 'Fecha alta', dataIndex: 'fechaAlta', width: 100},
+                {text: 'Fecha alta', dataIndex: 'fechaAlta', width: 100,
+                renderer: Ext.util.Format.dateRenderer('d/m/Y')},
                 {text: 'Stock', dataIndex: 'stock', width: 100},
                 {text: 'Nominación', dataIndex: 'idNominacion', width: 100},
                 {

@@ -213,4 +213,25 @@ class Producto extends Controller {
         exit;
     }
 
+    public function listarCategorias(){
+        $categorias = $this->model->getCategorias();
+        if ($categorias) {
+            $data = ["data" => $categorias, "success" => true];
+        } else {
+            $data = ["data" => [], "success" => false];
+        }
+        header('Content-Type: application/json');
+        echo json_encode($data);
+    }
+
+    public function listarNominaciones(){
+        $nominaciones = $this->model->getNominaciones();
+        if ($nominaciones) {
+            $data = ["data" => $nominaciones, "success" => true];
+        } else {
+            $data = ["data" => [], "success" => false];
+        }
+        header('Content-Type: application/json');
+        echo json_encode($data);
+    }
 }
