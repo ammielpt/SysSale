@@ -31,8 +31,8 @@ Ext.define('app.view.productos.GridProductos', {
                 {
                     text: 'Fecha alta',
                     dataIndex: 'fechaAlta',
-                    width: 100,
-                    renderer: Ext.util.Format.dateRenderer('d/m/Y')
+                    width: 150,
+                    renderer: Ext.util.Format.dateRenderer('d/m/Y H:i:s')
                 },
                 { text: 'Stock', dataIndex: 'stock', width: 100 },
                 {

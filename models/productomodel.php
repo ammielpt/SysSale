@@ -3,13 +3,16 @@
 include_once 'models/producto.php';
 include_once 'models/productocategoria.php';
 include_once 'models/productonominacion.php';
-class ProductoModel extends Model {
+class ProductoModel extends Model
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
-    public function insertarProducto($datos) {
+    public function insertarProducto($datos)
+    {
         $item = new Productos();
         try {
             $query = $this->db->connect()->prepare("insert into tbl_productos(nombre, precio, id_categoria, peso, fecha_alta, stock, id_nominacion) values(:nombre,:precio,:idCategoria,:peso,:fechaAlta,:stock,:idNominacion)");
@@ -40,7 +43,8 @@ class ProductoModel extends Model {
         }
     }
 
-    public function getAllProductos($rows, $off) {
+    public function getAllProductos($rows, $off)
+    {
         $items = [];
         try {
             $query = $this->db->connect()->query("select * from tbl_productos order by nombre limit $rows offset $off");
@@ -63,7 +67,8 @@ class ProductoModel extends Model {
         }
     }
 
-    public function getAllProductosReportExcel() {
+    public function getAllProductosReportExcel()
+    {
         $items = [];
         try {
             $query = $this->db->connect()->query("select * from tbl_clientes order by razon_social");
@@ -82,7 +87,8 @@ class ProductoModel extends Model {
         }
     }
 
-    public function countProductos() {
+    public function countProductos()
+    {
         $numeroProductos = 0;
         try {
             $query = $this->db->connect()->query("select count(*) as cantidad_productos from tbl_productos");
@@ -96,7 +102,8 @@ class ProductoModel extends Model {
         }
     }
 
-    public function getById($idCliente) {
+    public function getById($idCliente)
+    {
         $item = new Clientes();
         try {
             $query = $this->db->connect()->prepare("select * from tbl_clientes where id_cliente=:idCliente");
@@ -115,15 +122,19 @@ class ProductoModel extends Model {
         }
     }
 
-    public function update($item) {
+    public function update($item)
+    {
         try {
-            $query = $this->db->connect()->prepare("update tbl_clientes set razon_social=:razonSocial, ruc=:ruc, direccion=:direccion, fecha_nacimiento=:fechaNacimiento where id_cliente=:idCliente");
+            $query = $this->db->connect()->prepare("update tbl_productos set nombre=:nombre, precio=:precio, id_categoria=:idCategoria, peso=:peso, fecha_alta=:fechaAlta, stock=:stock, id_nominacion=:idNominacion where id_producto=:idProducto");
             $query->execute([
-                "razonSocial" => $item['razonSocial'],
-                "ruc" => $item['ruc'],
-                "direccion" => $item['direccion'],
-                "fechaNacimiento" => $item['fechaNacimiento'],
-                "idCliente" => $item['idCliente']
+                "nombre" => $item['nombre'],
+                "precio" => $item['precio'],
+                "idCategoria" => $item['idCategoria'],
+                "peso" => $item['peso'],
+                "fechaAlta" => $item['fechaAlta'],
+                "stock" => $item['stock'],
+                "idNominacion" => $item['idNominacion'],
+                "idProducto" => $item['idProducto']
             ]);
             return true;
         } catch (PDOException $exc) {
@@ -132,7 +143,8 @@ class ProductoModel extends Model {
         }
     }
 
-    public function delete($idCliente) {
+    public function delete($idCliente)
+    {
         try {
             $query = $this->db->connect()->prepare("delete from tbl_clientes where  id_cliente=:idCliente");
             $query->execute(["idCliente" => $idCliente]);
@@ -143,7 +155,8 @@ class ProductoModel extends Model {
         }
     }
 
-    public function getDocumentos($idCliente) {
+    public function getDocumentos($idCliente)
+    {
         $items = [];
         try {
             $query = $this->db->connect()->prepare("select * from tbl_documento_cliente  where id_cliente=:idCliente and  activo=1");
@@ -164,11 +177,12 @@ class ProductoModel extends Model {
             return false;
         }
     }
-    
-    public function getCategorias(){
+
+    public function getCategorias()
+    {
         $items = [];
         try {
-            $query = $this->db->connect()->query("select * from tbl_categoria");                   
+            $query = $this->db->connect()->query("select * from tbl_categoria");
             while ($row = $query->fetch()) {
                 $item = new ProductoCategoria();
                 $item->idCategoria = $row['id_categoria'];
@@ -182,10 +196,11 @@ class ProductoModel extends Model {
         }
     }
 
-    public function getNominaciones(){
+    public function getNominaciones()
+    {
         $items = [];
         try {
-            $query = $this->db->connect()->query("select * from tbl_nominacion");                   
+            $query = $this->db->connect()->query("select * from tbl_nominacion");
             while ($row = $query->fetch()) {
                 $item = new ProductoNominacion();
                 $item->idNominacion = $row['id_nominacion'];
@@ -198,5 +213,4 @@ class ProductoModel extends Model {
             return false;
         }
     }
-
 }

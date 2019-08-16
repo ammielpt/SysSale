@@ -1,6 +1,6 @@
 <?php
 
-class Consulta extends Controller {
+/*class Consulta extends Controller {
 
     function __construct() {
         parent::__construct();
@@ -65,5 +65,14 @@ class Consulta extends Controller {
         header('Content-Type: application/json');
         echo json_encode($data);
     }
-
 }
+*/
+$date1 = new DateTime('2019-08-13 00:00:00');
+$year= $date1->format('Y');
+$mes= $date1->format('m');
+$dia= $date1->format('d');
+$date = new DateTime();
+$date->setDate($year, $mes, $dia);
+$date->setTimezone(new DateTimeZone('America/Lima'));
+$date->format('Y-m-d H:i:s');
+?>
