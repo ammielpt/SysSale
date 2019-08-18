@@ -5,13 +5,16 @@ include_once 'models/telefonomodel.php';
 include_once 'models/correomodel.php';
 include_once 'models/documentocliente.php';
 
-class ClienteModel extends Model {
+class ClienteModel extends Model
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
-    public function insertarCliente($datos) {
+    public function insertarCliente($datos)
+    {
         $item = new Clientes();
         try {
             $query = $this->db->connect()->prepare("insert into tbl_clientes(razon_social, ruc, direccion, fecha_nacimiento) values(:razonSocial,:ruc,:direccion,:fechaNacimiento)");
@@ -31,10 +34,11 @@ class ClienteModel extends Model {
         }
     }
 
-    public function getAllClientes($rows, $off) {
+    public function getAllClientes($rows, $off)
+    {
         $items = [];
         try {
-            $query = $this->db->connect()->query("select * from tbl_clientes order by razon_social limit $rows offset $off");
+            $query = $this->db->connect()->query("select * from tbl_clientes where activo=1 order by razon_social limit $rows offset $off");
             while ($row = $query->fetch()) {
                 $item = new Clientes();
                 $item->idCliente = $row['id_cliente'];
@@ -51,10 +55,11 @@ class ClienteModel extends Model {
         }
     }
 
-    public function getAllClientesReportExcel() {
+    public function getAllClientesReportExcel()
+    {
         $items = [];
         try {
-            $query = $this->db->connect()->query("select * from tbl_clientes order by razon_social");
+            $query = $this->db->connect()->query("select * from tbl_clientes where activo=1 order by razon_social");
             while ($row = $query->fetch()) {
                 $item = new Clientes();
                 $item->razonSocial = $row['razon_social'];
@@ -70,10 +75,11 @@ class ClienteModel extends Model {
         }
     }
 
-    public function countClientes() {
+    public function countClientes()
+    {
         $numeroClientes = 0;
         try {
-            $query = $this->db->connect()->query("select count(*) as cantidad_clientes from tbl_clientes");
+            $query = $this->db->connect()->query("select count(*) as cantidad_clientes from tbl_clientes where activo=1");
             while ($row = $query->fetch()) {
                 $numeroClientes = $row['cantidad_clientes'];
             }
@@ -84,10 +90,11 @@ class ClienteModel extends Model {
         }
     }
 
-    public function getById($idCliente) {
+    public function getById($idCliente)
+    {
         $item = new Clientes();
         try {
-            $query = $this->db->connect()->prepare("select * from tbl_clientes where id_cliente=:idCliente");
+            $query = $this->db->connect()->prepare("select * from tbl_clientes where id_cliente=:idCliente and activo=1");
             $query->execute(["idCliente" => $idCliente]);
             while ($row = $query->fetch()) {
                 $item->idCliente = $row['id_cliente'];
@@ -103,7 +110,8 @@ class ClienteModel extends Model {
         }
     }
 
-    public function getPhoneById($idCliente) {
+    public function getPhoneById($idCliente)
+    {
         $items = [];
         try {
             $query = $this->db->connect()->prepare("select top.nombre_operador, tl.* from tbl_telefonos as tl left join tbl_operador as top on tl.id_operador=top.id_operador where tl.id_cliente=:idCliente and tl.activo=1");
@@ -124,7 +132,8 @@ class ClienteModel extends Model {
         }
     }
 
-    public function getEmailById($idCliente) {
+    public function getEmailById($idCliente)
+    {
         $items = [];
         try {
             $query = $this->db->connect()->prepare("select * from tbl_correos where id_cliente=:idCliente and activo=1");
@@ -145,7 +154,8 @@ class ClienteModel extends Model {
         }
     }
 
-    public function update($item) {
+    public function update($item)
+    {
         try {
             $query = $this->db->connect()->prepare("update tbl_clientes set razon_social=:razonSocial, ruc=:ruc, direccion=:direccion, fecha_nacimiento=:fechaNacimiento where id_cliente=:idCliente");
             $query->execute([
@@ -162,9 +172,10 @@ class ClienteModel extends Model {
         }
     }
 
-    public function delete($idCliente) {
+    public function delete($idCliente)
+    {
         try {
-            $query = $this->db->connect()->prepare("delete from tbl_clientes where  id_cliente=:idCliente");
+            $query = $this->db->connect()->prepare("update tbl_clientes set activo=0 where id_cliente=:idCliente");
             $query->execute(["idCliente" => $idCliente]);
             return true;
         } catch (PDOException $exc) {
@@ -173,7 +184,8 @@ class ClienteModel extends Model {
         }
     }
 
-    public function crearDocumentoCliente($datos) {
+    public function crearDocumentoCliente($datos)
+    {
         $item = new DocumentoCliente();
         try {
             $query = $this->db->connect()->prepare("insert into tbl_documento_cliente(id_cliente, nombre, size, url, descripcion) values(:idCliente,:nombre,:size,:url,:descripcion)");
@@ -196,7 +208,8 @@ class ClienteModel extends Model {
         }
     }
 
-    public function getDocumentos($idCliente) {
+    public function getDocumentos($idCliente)
+    {
         $items = [];
         try {
             $query = $this->db->connect()->prepare("select * from tbl_documento_cliente  where id_cliente=:idCliente and  activo=1");
@@ -217,5 +230,4 @@ class ClienteModel extends Model {
             return false;
         }
     }
-
 }

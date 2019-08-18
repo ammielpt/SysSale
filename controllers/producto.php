@@ -67,7 +67,7 @@ class Producto extends Controller
 
     function uploadFileProducto()
     {
-        $idCliente = $_POST['idProducto'];
+        $idProducto = $_POST['idProducto'];
         $descripcion = $_POST['descripcion'];
         if (isset($_FILES['file'])) {
             $phpFileUploadErrors = array(
@@ -98,8 +98,8 @@ class Producto extends Controller
             } else {
                 $nombreArchivo = $_FILES['file']['name'];
                 $sizeArchivo = $_FILES['file']['size'];
-                $urlArchivo = "resources/files/" . $_FILES['file']['name'];
-                $documento = $this->model->crearDocumentoCliente(['idCliente' => $idCliente, 'nombre' => $nombreArchivo, 'size' => $sizeArchivo, 'descripcion' => $descripcion, 'url' => $urlArchivo]);
+                $urlArchivo = "resources/files/productos/" . $_FILES['file']['name'];
+                $documento = $this->model->crearDocumentoProducto(['idProducto' => $idProducto, 'nombre' => $nombreArchivo, 'size' => $sizeArchivo, 'descripcion' => $descripcion, 'url' => $urlArchivo]);
                 if ($documento) {
                     move_uploaded_file($_FILES['file']['tmp_name'], $urlArchivo);
                     $flag = true;
@@ -120,8 +120,8 @@ class Producto extends Controller
 
     function listarDocumentosProducto()
     {
-        $idCliente = $_GET['idCliente'];
-        $documentos = $this->model->getDocumentos($idCliente);
+        $idProducto = $_GET['idProducto'];
+        $documentos = $this->model->getDocumentos($idProducto);
         if ($documentos) {
             $data = ["data" => $documentos, "success" => true];
         } else {
@@ -172,15 +172,15 @@ class Producto extends Controller
         echo json_encode($data);
     }
 
-    function eliminarProducto($param = null)
+    function eliminarProducto()
     {
-        $idCliente = $param[0];
+        $idProducto = $_GET['idProducto'];
         $flag = false;
-        if ($this->model->delete($idCliente)) {
-            $mensaje = "Cliente eliminado correctamente";
+        if ($this->model->delete($idProducto)) {
+            $mensaje = "Producto eliminado correctamente";
             $flag = true;
         } else {
-            $mensaje = "Nose pudo eliminar el cliente";
+            $mensaje = "Nose pudo eliminar el Producto";
         }
         $data = ["mensaje" => $mensaje, "success" => $flag];
         header('Content-Type: application/json');
@@ -189,7 +189,7 @@ class Producto extends Controller
 
     function reporteProductoExcel()
     {
-        $clientes = $this->model->getAllClientesReportExcel();
+        $productos = $this->model->getAllProductosReportExcel();
         $helper = new Sample();
         if ($helper->isCli()) {
             $helper->log('This example should only be run from a Web Browser' . PHP_EOL);
@@ -208,36 +208,48 @@ class Producto extends Controller
         // Add some data
         $spreadsheet->setActiveSheetIndex(0);
         $contador = 4;
-        foreach ($clientes as $key => $value) {
+        foreach ($productos as $key => $value) {
             $spreadsheet->getActiveSheet()
-                ->setCellValue('B' . $contador, $value->razonSocial)
-                ->setCellValue('C' . $contador, $value->ruc)
-                ->setCellValue('D' . $contador, $value->direccion)
-                ->setCellValue('E' . $contador, $value->fechaNacimiento);
+                ->setCellValue('B' . $contador, $value->nombre);
+            /*   ->setCellValue('C' . $contador, $value->nombre)
+                ->setCellValue('D' . $contador, $value->precio)
+                ->setCellValue('E' . $contador, $value->categoria);
+               ->setCellValue('F' . $contador, $value->peso)
+                ->setCellValue('G' . $contador, $value->fechaAlta)
+                ->setCellValue('H' . $contador, $value->stock)
+                ->setCellValue('I' . $contador, $value->nominacion);*/
             $contador++;
         }
         // Width columns
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(40);
-        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+        /*$spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(25);
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(40);
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setWidth(25);
+          $spreadsheet->getActiveSheet()->getColumnDimension('F')->setWidth(40);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setWidth(40);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setWidth(25);*/
 
         // make table headers
-        $spreadsheet->getActiveSheet()->setCellValue("B3", "Razon Social");
-        $spreadsheet->getActiveSheet()->setCellValue("C3", "Ruc");
-        $spreadsheet->getActiveSheet()->setCellValue("D3", "Direccion");
-        $spreadsheet->getActiveSheet()->setCellValue("E3", "Fecha de Nacimiento");
+        $spreadsheet->getActiveSheet()->setCellValue("B3", "Nombre");
+        /* $spreadsheet->getActiveSheet()->setCellValue("C3", "Nombre");
+        $spreadsheet->getActiveSheet()->setCellValue("D3", "Precio");
+        $spreadsheet->getActiveSheet()->setCellValue("E3", "Categoria");
+       $spreadsheet->getActiveSheet()->setCellValue("F3", "Peso");
+        $spreadsheet->getActiveSheet()->setCellValue("G3", "Fecha de alta");
+        $spreadsheet->getActiveSheet()->setCellValue("H3", "Stock");
+        $spreadsheet->getActiveSheet()->setCellValue("I3", "Unidad de Medida");*/
         //make table headers colors
-        $spreadsheet->getActiveSheet()->getStyle('B3:E3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_RED);
-        $spreadsheet->getActiveSheet()->getStyle('B3:E3')->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
+        $spreadsheet->getActiveSheet()->getStyle('B3:B3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_RED);
+        $spreadsheet->getActiveSheet()->getStyle('B3:B3')->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
 
         // Rename worksheet
-        $spreadsheet->getActiveSheet()->setTitle('Reporte de clientes');
+        $spreadsheet->getActiveSheet()->setTitle('Reporte de Productos');
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $spreadsheet->setActiveSheetIndex(0);
         // Redirect output to a client’s web browser (Xls)
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Reporte Clientes.xls"');
+        header('Content-Disposition: attachment;filename="Reporte Productos.xls"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');

@@ -8,8 +8,9 @@ Ext.define('app.view.productos.ProductoController', {
             function(respuesta) {
                 if (respuesta == 'yes') {
                     Ext.Ajax.request({
-                        url: 'http://localhost/SysSale/producto/eliminarProducto/' + rec.get('idProducto'),
+                        url: 'http://localhost/SysSale/producto/eliminarProducto',
                         method: 'GET',
+                        params: { idProducto: rec.get('idProducto') },
                         success: function(response, opts) {
                             var obj = Ext.decode(response.responseText);
                             if (obj.success) {

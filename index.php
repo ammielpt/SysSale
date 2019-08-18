@@ -54,6 +54,7 @@ $var = new App();
 
         <!-- The line below must be kept intact for Sencha Cmd to build your application -->
         <script id="microloader" data-app="55c55f52-2223-4e8c-8f15-b186e15eb648" type="text/javascript" src="bootstrap.js"></script>
+        <link src="resources/font/fontawesome.min.css">
     </head>
     <body>
         <div id="backload" style="display: table; background-color: white; position: absolute; left: 0; top: 0; z-index: 100000; width:100%;height:100%;">

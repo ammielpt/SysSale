@@ -33,35 +33,18 @@ Ext.define('app.view.productos.form.FormProducto', {
                     layout: 'hbox',
                     defaults: {
                         labelAlign: 'top',
-                        flex: 1
+                        flex: 1,
+                        margin: '0 10 0 0'
                     },
                     items: [{
                             xtype: 'numberfield',
                             fieldLabel: 'Precio',
-                            name: 'precio',
-                            margin: '0 10 0 0'
+                            name: 'precio'
                         },
                         {
-                            xtype: 'combobox',
-                            fieldLabel: 'Categoría',
-                            name: 'idCategoria',
-                            store: categoriaStore,
-                            displayField: 'nombreCategoria',
-                            valueField: 'idCategoria',
-                            editable: false,
-                            allowBlank: true,
-                            listeners: {
-                                scope: me,
-                                afterrender: function(cbo) {
-                                    categoriaStore.on('load', function() {
-                                        categoriaStore.each(function(rcd) {
-                                            if (cbo.getValue() == rcd.get('idCategoria')) {
-                                                cbo.setRawValue(rcd.get('nombreCategoria'));
-                                            }
-                                        });
-                                    });
-                                }
-                            }
+                            xtype: 'numberfield',
+                            fieldLabel: 'Stock',
+                            name: 'stock'
                         }
                     ]
                 },
@@ -70,17 +53,18 @@ Ext.define('app.view.productos.form.FormProducto', {
                     layout: 'hbox',
                     defaults: {
                         labelAlign: 'top',
-                        flex: 1
+                        flex: 1,
+                        margin: '0 10 0 0'
                     },
                     items: [{
                             xtype: 'numberfield',
-                            fieldLabel: 'Stock',
-                            name: 'stock',
-                            margin: '0 10 0 0'
+                            fieldLabel: 'Peso',
+                            name: 'peso',
+                            allowBlank: true
                         },
                         {
                             xtype: 'combobox',
-                            fieldLabel: 'Nominación',
+                            fieldLabel: 'Unidad de medida',
                             name: 'idNominacion',
                             store: nominacionStore,
                             displayField: 'nombreNominacion',
@@ -107,20 +91,37 @@ Ext.define('app.view.productos.form.FormProducto', {
                     layout: 'hbox',
                     defaults: {
                         labelAlign: 'top',
-                        flex: 1
+                        flex: 1,
+                        margin: '0 10 0 0'
                     },
                     items: [{
-                            xtype: 'numberfield',
-                            fieldLabel: 'Peso',
-                            name: 'peso',
-                            margin: '0 10 0 0',
-                            allowBlank: true
+                            xtype: 'combobox',
+                            fieldLabel: 'Categoría',
+                            name: 'idCategoria',
+                            store: categoriaStore,
+                            displayField: 'nombreCategoria',
+                            valueField: 'idCategoria',
+                            editable: false,
+                            allowBlank: true,
+                            listeners: {
+                                scope: me,
+                                afterrender: function(cbo) {
+                                    categoriaStore.on('load', function() {
+                                        categoriaStore.each(function(rcd) {
+                                            if (cbo.getValue() == rcd.get('idCategoria')) {
+                                                cbo.setRawValue(rcd.get('nombreCategoria'));
+                                            }
+                                        });
+                                    });
+                                }
+                            }
                         },
                         {
                             xtype: 'datefield',
                             fieldLabel: 'Fecha Alta',
                             name: 'fechaAlta',
                             allowBlank: true,
+                            readOnly: true,
                             value: new Date(),
                             format: 'd/m/Y',
                             submitFormat: 'Y-m-d H:i:s'
@@ -171,4 +172,4 @@ Ext.define('app.view.productos.form.FormProducto', {
             }
         });
     }
-});
+})

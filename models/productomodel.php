@@ -3,6 +3,7 @@
 include_once 'models/producto.php';
 include_once 'models/productocategoria.php';
 include_once 'models/productonominacion.php';
+include_once 'models/documentoproducto.php';
 class ProductoModel extends Model
 {
 
@@ -47,7 +48,7 @@ class ProductoModel extends Model
     {
         $items = [];
         try {
-            $query = $this->db->connect()->query("select * from tbl_productos order by nombre limit $rows offset $off");
+            $query = $this->db->connect()->query("select * from tbl_productos  where activo=1 order by nombre limit $rows offset $off");
             while ($row = $query->fetch()) {
                 $item = new Productos();
                 $item->idProducto = $row['id_producto'];
@@ -71,13 +72,18 @@ class ProductoModel extends Model
     {
         $items = [];
         try {
-            $query = $this->db->connect()->query("select * from tbl_clientes order by razon_social");
+            $query = $this->db->connect()->query("select tp.*, tc.nombre_categoria, tn.nombre_nominacion from tbl_productos tp 
+            left join tbl_categoria tc on tp.id_categoria= tc.id_categoria left join tbl_nominacion tn on tp.id_nominacion=tn.id_nominacion where tp.activo=1");
             while ($row = $query->fetch()) {
-                $item = new Clientes();
-                $item->razonSocial = $row['razon_social'];
-                $item->ruc = $row['ruc'];
-                $item->direccion = $row['direccion'];
-                $item->fechaNacimiento = $row['fecha_nacimiento'];
+                $item = new Productos();
+                $item->idProducto = $row['id_producto'];
+                $item->nombre = $row['nombre'];
+                $item->precio = $row['precio'];
+                $item->categoria = $row['nombre_categoria'];
+                $item->peso = $row['peso'];
+                $item->fechaAlta = $row['fecha_alta'];
+                $item->stock = $row['stock'];
+                $item->nominacion = $row['nombre_nominacion'];
                 array_push($items, $item);
             }
             return $items;
@@ -91,7 +97,7 @@ class ProductoModel extends Model
     {
         $numeroProductos = 0;
         try {
-            $query = $this->db->connect()->query("select count(*) as cantidad_productos from tbl_productos");
+            $query = $this->db->connect()->query("select count(*) as cantidad_productos from tbl_productos where activo=1");
             while ($row = $query->fetch()) {
                 $numeroProductos = $row['cantidad_productos'];
             }
@@ -102,18 +108,21 @@ class ProductoModel extends Model
         }
     }
 
-    public function getById($idCliente)
+    public function getById($idProducto)
     {
-        $item = new Clientes();
+        $item = new Productos();
         try {
-            $query = $this->db->connect()->prepare("select * from tbl_clientes where id_cliente=:idCliente");
-            $query->execute(["idCliente" => $idCliente]);
+            $query = $this->db->connect()->prepare("select * from tbl_productos where id_producto=:idProducto and activo=1");
+            $query->execute(["idProducto" => $idProducto]);
             while ($row = $query->fetch()) {
-                $item->idCliente = $row['id_cliente'];
-                $item->razonSocial = $row['razon_social'];
-                $item->ruc = $row['ruc'];
-                $item->direccion = $row['direccion'];
-                $item->fechaNacimiento = $row['fecha_nacimiento'];
+                $item->idProducto = $row['id_producto'];
+                $item->nombre = $row['nombre'];
+                $item->precio = $row['precio'];
+                $item->idCategoria = $row['id_categoria'];
+                $item->peso = $row['peso'];
+                $item->fechaAlta = $row['fecha_alta'];
+                $item->stock = $row['stock'];
+                $item->idNominacion = $row['id_nominacion'];
             }
             return $item;
         } catch (Exception $exc) {
@@ -143,11 +152,11 @@ class ProductoModel extends Model
         }
     }
 
-    public function delete($idCliente)
+    public function delete($idProducto)
     {
         try {
-            $query = $this->db->connect()->prepare("delete from tbl_clientes where  id_cliente=:idCliente");
-            $query->execute(["idCliente" => $idCliente]);
+            $query = $this->db->connect()->prepare("update tbl_productos set activo=0  where  id_producto=:idProducto");
+            $query->execute(["idProducto" => $idProducto]);
             return true;
         } catch (PDOException $exc) {
             echo $exc->getMessage();
@@ -155,16 +164,16 @@ class ProductoModel extends Model
         }
     }
 
-    public function getDocumentos($idCliente)
+    public function getDocumentos($idProducto)
     {
         $items = [];
         try {
-            $query = $this->db->connect()->prepare("select * from tbl_documento_cliente  where id_cliente=:idCliente and  activo=1");
-            $query->execute(["idCliente" => $idCliente]);
+            $query = $this->db->connect()->prepare("select * from tbl_documento_producto  where id_producto=:idProducto and  activo=1");
+            $query->execute(["idProducto" => $idProducto]);
             while ($row = $query->fetch()) {
-                $item = new DocumentoCliente();
+                $item = new DocumentoProducto();
                 $item->idDocumento = $row['id_documento'];
-                $item->idCliente = $row['id_cliente'];
+                $item->idCliente = $row['id_producto'];
                 $item->nombre = $row['nombre'];
                 $item->size = $row['size'];
                 $item->url = $row['url'];
@@ -177,7 +186,29 @@ class ProductoModel extends Model
             return false;
         }
     }
-
+    public function crearDocumentoProducto($datos)
+    {
+        $item = new DocumentoProducto();
+        try {
+            $query = $this->db->connect()->prepare("insert into tbl_documento_producto(id_producto, nombre, size, url, descripcion) values(:idProducto,:nombre,:size,:url,:descripcion)");
+            $query->execute([
+                'idProducto' => $datos['idProducto'],
+                'nombre' => $datos['nombre'],
+                'size' => $datos['size'],
+                'url' => $datos['url'],
+                'descripcion' => $datos['descripcion']
+            ]);
+            $item->idProducto = $datos['idProducto'];
+            $item->nombre = $datos['nombre'];
+            $item->size = $datos['size'];
+            $item->url = $datos['url'];
+            $item->descripcion = $datos['descripcion'];
+            return $item;
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+            return false;
+        }
+    }
     public function getCategorias()
     {
         $items = [];

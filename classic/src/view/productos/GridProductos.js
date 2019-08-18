@@ -11,7 +11,7 @@ Ext.define('app.view.productos.GridProductos', {
             store: storeProductos,
             columns: [
                 { text: 'Descripción', dataIndex: 'nombre', width: 300, flex: 1 },
-                { text: 'Precio', dataIndex: 'precio', width: 150 },
+                { text: 'Precio', dataIndex: 'precio', width: 150, xtype: 'numbercolumn', format: '0.00' },
                 {
                     text: 'Categoria',
                     dataIndex: 'idCategoria',
@@ -27,7 +27,6 @@ Ext.define('app.view.productos.GridProductos', {
                         return val;
                     }
                 },
-                { text: 'Peso', dataIndex: 'peso', width: 120, hidden: true },
                 {
                     text: 'Fecha alta',
                     dataIndex: 'fechaAlta',
@@ -35,10 +34,11 @@ Ext.define('app.view.productos.GridProductos', {
                     renderer: Ext.util.Format.dateRenderer('d/m/Y H:i:s')
                 },
                 { text: 'Stock', dataIndex: 'stock', width: 100 },
+                { text: 'Peso', dataIndex: 'peso', width: 120, xtype: 'numbercolumn', format: '0.00' },
                 {
-                    text: 'Nominación',
+                    text: 'Unidad de Medida',
                     dataIndex: 'idNominacion',
-                    width: 100,
+                    width: 150,
                     renderer: function(value) {
                         var val;
                         storeNominaciones.each(function(record) {
@@ -99,7 +99,7 @@ Ext.define('app.view.productos.GridProductos', {
         });
         this.tbar = [{
                 text: 'Agregar',
-                iconCls: 'fa fa-user-plus',
+                iconCls: 'fa far fa-plus-circle',
                 handler: function() {
                     var win = Ext.create('Ext.Window', {
                         modal: true,
@@ -149,7 +149,7 @@ Ext.define('app.view.productos.GridProductos', {
                 handler: function() {
                     var record = me.getSelectionModel().getSelection();
                     if (!record[0]) {
-                        Ext.Msg.alert("Mensaje", "Por favor seleccione un registro de cliente");
+                        Ext.Msg.alert("Mensaje", "Por favor seleccione un registro de producto");
                         return;
                     }
                     var win = Ext.create('Ext.Window', {
@@ -158,7 +158,7 @@ Ext.define('app.view.productos.GridProductos', {
                         height: 380,
                         width: 600,
                         y: 0,
-                        items: [Ext.create('app.view.clientes.documents.GridDocuments', { rcdCliente: record[0] })],
+                        items: [Ext.create('app.view.productos.documents.GridDocuments', { rcdProducto: record[0] })],
                         buttons: [{
                             text: 'Cerrar',
                             handler: function() {

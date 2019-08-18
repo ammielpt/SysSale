@@ -1,22 +1,28 @@
 <?php
 require "vendor/autoload.php";
+
 use PhpOffice\PhpSpreadsheet\Helper\Sample;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Dompdf\Dompdf;
+
 require_once 'vendor/phpoffice/phpspreadsheet/src/Bootstrap.php';
 
-class Cliente extends Controller {
+class Cliente extends Controller
+{
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
     }
 
-    public function testRest($request, $response, $args) {
+    public function testRest($request, $response, $args)
+    {
         return 'Home';
     }
 
-    function crearCliente() {
+    function crearCliente()
+    {
         $razonSocial = $_POST['razonSocial'];
         $ruc = $_POST['ruc'];
         $direccion = $_POST['direccion'];
@@ -34,7 +40,8 @@ class Cliente extends Controller {
         echo json_encode($data);
     }
 
-    function listarClientes() {
+    function listarClientes()
+    {
         $rows = $_GET['limit'];
         $off = $_GET['start'];
         $clientes = $this->model->getAllClientes($rows, $off);
@@ -44,7 +51,8 @@ class Cliente extends Controller {
         echo json_encode($data);
     }
 
-    function generarReportePDFCliente($params = null) {
+    function generarReportePDFCliente($params = null)
+    {
         $idCliente = $params[0];
         $cliente = $this->model->getById($idCliente);
         $telefonos = $this->model->getPhoneById($idCliente);
@@ -112,7 +120,8 @@ class Cliente extends Controller {
         $dompdf->stream("sample.pdf", array("Attachment" => 0));
     }
 
-    function uploadFileCliente() {
+    function uploadFileCliente()
+    {
         $idCliente = $_POST['idCliente'];
         $descripcion = $_POST['descripcion'];
         if (isset($_FILES['file'])) {
@@ -164,7 +173,8 @@ class Cliente extends Controller {
         }
     }
 
-    function listarDocumentosCliente() {
+    function listarDocumentosCliente()
+    {
         $idCliente = $_GET['idCliente'];
         $documentos = $this->model->getDocumentos($idCliente);
         if ($documentos) {
@@ -176,7 +186,8 @@ class Cliente extends Controller {
         echo json_encode($data);
     }
 
-    function actualizarCliente() {
+    function actualizarCliente()
+    {
         $flag = false;
         $idCliente = $_POST['idCliente'];
         $razonSocial = $_POST['razonSocial'];
@@ -195,7 +206,8 @@ class Cliente extends Controller {
         echo json_encode($data);
     }
 
-    function eliminarCliente($param = null) {
+    function eliminarCliente($param = null)
+    {
         $idCliente = $param[0];
         $flag = false;
         if ($this->model->delete($idCliente)) {
@@ -209,32 +221,33 @@ class Cliente extends Controller {
         echo json_encode($data);
     }
 
-    function reporteClienteExcel() {
+    function reporteClienteExcel()
+    {
         $clientes = $this->model->getAllClientesReportExcel();
         $helper = new Sample();
         if ($helper->isCli()) {
             $helper->log('This example should only be run from a Web Browser' . PHP_EOL);
             return;
         }
-// Create new Spreadsheet object
+        // Create new Spreadsheet object
         $spreadsheet = new Spreadsheet();
-// Set document properties
+        // Set document properties
         $spreadsheet->getProperties()->setCreator('Maarten Balliauw')
-                ->setLastModifiedBy('Maarten Balliauw')
-                ->setTitle('Office 2007 XLSX Test Document')
-                ->setSubject('Office 2007 XLSX Test Document')
-                ->setDescription('Test document for Office 2007 XLSX, generated using PHP classes.')
-                ->setKeywords('office 2007 openxml php')
-                ->setCategory('Test result file');
-// Add some data
+            ->setLastModifiedBy('Maarten Balliauw')
+            ->setTitle('Office 2007 XLSX Test Document')
+            ->setSubject('Office 2007 XLSX Test Document')
+            ->setDescription('Test document for Office 2007 XLSX, generated using PHP classes.')
+            ->setKeywords('office 2007 openxml php')
+            ->setCategory('Test result file');
+        // Add some data
         $spreadsheet->setActiveSheetIndex(0);
         $contador = 4;
         foreach ($clientes as $key => $value) {
             $spreadsheet->getActiveSheet()
-                    ->setCellValue('B' . $contador, $value->razonSocial)
-                    ->setCellValue('C' . $contador, $value->ruc)
-                    ->setCellValue('D' . $contador, $value->direccion)
-                    ->setCellValue('E' . $contador, $value->fechaNacimiento);
+                ->setCellValue('B' . $contador, $value->razonSocial)
+                ->setCellValue('C' . $contador, $value->ruc)
+                ->setCellValue('D' . $contador, $value->direccion)
+                ->setCellValue('E' . $contador, $value->fechaNacimiento);
             $contador++;
         }
         // Width columns
@@ -252,18 +265,18 @@ class Cliente extends Controller {
         $spreadsheet->getActiveSheet()->getStyle('B3:E3')->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)->getStartColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_RED);
         $spreadsheet->getActiveSheet()->getStyle('B3:E3')->getFont()->getColor()->setARGB(\PhpOffice\PhpSpreadsheet\Style\Color::COLOR_WHITE);
 
-// Rename worksheet
+        // Rename worksheet
         $spreadsheet->getActiveSheet()->setTitle('Reporte de clientes');
-// Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $spreadsheet->setActiveSheetIndex(0);
-// Redirect output to a client’s web browser (Xls)
+        // Redirect output to a client’s web browser (Xls)
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="Reporte Clientes.xls"');
         header('Cache-Control: max-age=0');
-// If you're serving to IE 9, then the following may be needed
+        // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
 
-// If you're serving to IE over SSL, then the following may be needed
+        // If you're serving to IE over SSL, then the following may be needed
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
         header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
@@ -273,5 +286,4 @@ class Cliente extends Controller {
         $writer->save('php://output');
         exit;
     }
-
 }

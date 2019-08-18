@@ -40,7 +40,14 @@ Ext.application({
         'app.store.productos.StoreProductos',
         'app.view.productos.GridProductos',
         'app.model.productos.ProductoModel',
-        'app.view.productos.ProductoController'
+        'app.view.productos.ProductoController',
+        'app.store.productos.StoreDocuments',
+        'app.model.productos.DocumentModel',
+        'app.view.productos.documents.GridDocuments',
+        'app.view.productos.form.FormProducto',
+        'app.view.productos.documents.FormDocument',
+        'app.store.productos.StoreNominaciones',
+        'app.store.productos.StoreCategorias'
     ],
 
     // The name of the initial view to create. With the classic toolkit this class
@@ -49,9 +56,9 @@ Ext.application({
     //
     mainView: 'app.view.main.Main'
 
-            //-------------------------------------------------------------------------
-            // Most customizations should be made to app.Application. If you need to
-            // customize this file, doing so below this section reduces the likelihood
-            // of merge conflicts when upgrading to new versions of Sencha Cmd.
-            //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    // Most customizations should be made to app.Application. If you need to
+    // customize this file, doing so below this section reduces the likelihood
+    // of merge conflicts when upgrading to new versions of Sencha Cmd.
+    //-------------------------------------------------------------------------
 });

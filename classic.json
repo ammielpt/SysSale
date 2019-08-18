@@ -109,7 +109,7 @@
         "app.view.common.ModalWindow": "classic/src/view/common/ModalWindow.js",
         "app.view.main.form.FormCliente": "classic/src/view/main/form/FormCliente.js",
         "app.view.clientes.ClienteController": "app/view/clientes/ClienteController.js",
-        "app.view.telefonos.FormTelefono": "app/store/telefonos/StoreTelefonos.js",
+        "app.store.telefonos.FormTelefono": "app/store/telefonos/StoreTelefonos.js",
         "app.view.telefonos.GridTelefonos": "classic/src/view/telefonos/GridTelefonos.js",
         "app.view.telefonos.FormTelefono": "classic/src/view/telefonos/FormTelefono.js",
         "app.store.operadores.StoreOperadores": "app/store/operadores/StoreOperadores.js",
@@ -122,13 +122,19 @@
         "app.view.clientes.documents.GridDocuments": "classic/src/view/clientes/documents/GridDocuments.js",
         "app.model.clientes.DocumentModel": "app/model/clientes/DocumentModel.js",
         "app.view.clientes.DocumentController": "app/view/clientes/DocumentController.js",
-        "app.store.clientes.StoreDocuments": "app/store/clientes/StoreDocuments.js",
         "app.view.clientes.documents.FormDocument": "classic/src/view/clientes/documents/FormDocument.js",
-        "app.store.productos.StoreProductos": "app/store/productos/StoreProductos.js",
+        "app.store.clientes.StoreDocuments": "app/store/clientes/StoreDocuments.js",
+        "app.store.clientes.StoreProductos": "app/store/clientes/StoreProductos.js",
+        "app.store.productos.StoreNominaciones": "app/store/productos/StoreNominaciones.js",
         "app.view.productos.GridProductos": "classic/src/view/productos/GridProductos.js",
         "app.model.productos.ProductoModel": "app/model/productos/ProductoModel.js",
         "app.view.productos.ProductoController": "app/view/productos/ProductoController.js",
-        "app.view.productos.form.FormProducto": "classic/src/view/productos/form/FormProducto.js"
+        "app.view.productos.form.FormProducto": "classic/src/view/productos/form/FormProducto.js",
+        "app.view.productos.documents.GridDocuments": "classic/src/view/productos/documents/GridDocuments.js",
+        "app.model.productos.DocumentModel": "app/model/productos/DocumentModel.js",
+        "app.store.productos.StoreProductos": "app/store/productos/StoreProductos.js",
+        "app.store.productos.StoreCategorias": "app/store/productos/StoreCategorias.js",
+        "app.view.productos.documents.FormDocument": "classic/src/view/productos/documents/FormDocument.js"
     },
     "classes": {
         "Ext.AbstractManager": {
@@ -3053,116 +3059,116 @@
         }
     },
     "js": [{
-            "isSdk": true,
-            "path": "ext/build/ext-all-rtl-debug.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/Component.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/container/ButtonGroup.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/form/field/HtmlEditor.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/grid/RowEditor.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/grid/column/RowNumberer.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/layout/component/Dock.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/menu/Menu.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/menu/Separator.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/panel/Panel.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/panel/Table.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/picker/Month.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/resizer/Splitter.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/toolbar/Paging.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-neptune/overrides/toolbar/Toolbar.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/Component.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/form/field/Checkbox.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/grid/column/Column.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/grid/column/RowNumberer.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/grid/plugin/RowExpander.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/list/TreeItem.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/menu/Item.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/menu/Menu.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/picker/Date.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/picker/Month.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/resizer/Splitter.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/selection/CheckboxModel.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/selection/SpreadsheetModel.js"
-        }, {
-            "bootstrap": true,
-            "path": "ext/classic/theme-triton/overrides/toolbar/Paging.js"
-        }, {
-            "bootstrap": true,
-            "remote": true,
-            "platform": ["fashion"],
-            "isSdk": false,
-            "path": "/~cmd/extensions/sencha-fashion/fashion/fashion.js"
-        }, {
-            "bootstrap": true,
-            "remote": true,
-            "platform": ["fashion"],
-            "isSdk": false,
-            "path": "/~cmd/extensions/sencha-fashion/sass-compiler.js"
-        }, {
-            "path": "app.js"
-        }],
+        "isSdk": true,
+        "path": "ext/build/ext-all-rtl-debug.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/Component.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/container/ButtonGroup.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/form/field/HtmlEditor.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/grid/RowEditor.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/grid/column/RowNumberer.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/layout/component/Dock.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/menu/Menu.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/menu/Separator.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/panel/Panel.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/panel/Table.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/picker/Month.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/resizer/Splitter.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/toolbar/Paging.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-neptune/overrides/toolbar/Toolbar.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/Component.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/form/field/Checkbox.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/grid/column/Column.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/grid/column/RowNumberer.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/grid/plugin/RowExpander.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/list/TreeItem.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/menu/Item.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/menu/Menu.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/picker/Date.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/picker/Month.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/resizer/Splitter.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/selection/CheckboxModel.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/selection/SpreadsheetModel.js"
+    }, {
+        "bootstrap": true,
+        "path": "ext/classic/theme-triton/overrides/toolbar/Paging.js"
+    }, {
+        "bootstrap": true,
+        "remote": true,
+        "platform": ["fashion"],
+        "isSdk": false,
+        "path": "/~cmd/extensions/sencha-fashion/fashion/fashion.js"
+    }, {
+        "bootstrap": true,
+        "remote": true,
+        "platform": ["fashion"],
+        "isSdk": false,
+        "path": "/~cmd/extensions/sencha-fashion/sass-compiler.js"
+    }, {
+        "path": "app.js"
+    }],
     "css": [{
-            "remote": false,
-            "exclude": ["fashion"],
-            "path": "build/development/app/classic/resources/app-all_1.css"
-        }, {
-            "remote": false,
-            "exclude": ["fashion"],
-            "path": "build/development/app/classic/resources/app-all_2.css"
-        }],
+        "remote": false,
+        "exclude": ["fashion"],
+        "path": "build/development/app/classic/resources/app-all_1.css"
+    }, {
+        "remote": false,
+        "exclude": ["fashion"],
+        "path": "build/development/app/classic/resources/app-all_2.css"
+    }],
     "cache": {
         "enable": false,
         "deltas": "classic/deltas"
