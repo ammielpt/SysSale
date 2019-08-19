@@ -42,6 +42,7 @@ Ext.define('app.view.productos.documents.GridDocuments', {
                     y: 50,
                     modal: true,
                     title: 'Seleccionar Archivo',
+                    iconCls: 'fa fa-file',
                     items: [Ext.create('app.view.productos.documents.FormDocument', { store: documentStore, idProducto: me.rcdProducto.get('idProducto') })]
                 });
                 win.show();

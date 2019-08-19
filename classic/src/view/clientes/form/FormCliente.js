@@ -2,7 +2,7 @@ Ext.define('app.view.clientes.form.FormCliente', {
     extend: 'Ext.form.Panel',
     xtype: 'formcliente',
     bodyPadding: 10,
-    initComponent: function () {
+    initComponent: function() {
         var me = this;
         Ext.apply(this, {
             fieldDefaults: {
@@ -12,8 +12,7 @@ Ext.define('app.view.clientes.form.FormCliente', {
                 anchor: '100%',
                 allowBlank: false
             },
-            items: [
-                {
+            items: [{
                     xtype: 'textfield',
                     fieldLabel: 'ID',
                     labelAlign: 'top',
@@ -28,8 +27,7 @@ Ext.define('app.view.clientes.form.FormCliente', {
                         labelAlign: 'top',
                         flex: 1
                     },
-                    items: [
-                        {
+                    items: [{
                             xtype: 'textfield',
                             fieldLabel: 'Ruc',
                             name: 'ruc',
@@ -60,12 +58,10 @@ Ext.define('app.view.clientes.form.FormCliente', {
                     xtype: 'fieldset',
                     title: 'Telefonos',
                     instructions: 'Contactos de clientes',
-                    items: [
-                        {
-                            xtype: 'gridtelefonos',
-                            rcdCliente: me.record
-                        }
-                    ]
+                    items: [{
+                        xtype: 'gridtelefonos',
+                        rcdCliente: me.record
+                    }]
                 }
             ]
         });
@@ -73,13 +69,13 @@ Ext.define('app.view.clientes.form.FormCliente', {
         if (me.record)
             me.loadRecord(me.record);
     },
-    doSubmit: function (values, win, store) {
+    doSubmit: function(values, win, store) {
         var rcd, me = this;
         Ext.Ajax.request({
             url: Sales.Config.HOME_URL + '/cliente/crearCliente',
             params: values,
             method: 'POST',
-            success: function (response, opts) {
+            success: function(response, opts) {
                 var obj = Ext.decode(response.responseText);
                 Ext.Msg.alert('Mensaje', obj.mensaje);
                 rcd = Ext.create('app.model.clientes.ClienteModel', obj.data);
@@ -87,19 +83,19 @@ Ext.define('app.view.clientes.form.FormCliente', {
                 me.loadRecord(rcd);
                 me.down('gridtelefonos').rcdCliente = rcd;
             },
-            failure: function (response, opts) {
+            failure: function(response, opts) {
                 console.log('server-side failure with status code ' + response.status);
             }
         });
     },
-    doUpdate: function (values, win, store) {
+    doUpdate: function(values, win, store) {
         var me = this;
         values.fechaNacimiento = new Date(values.fechaNacimiento);
         Ext.Ajax.request({
             url: Sales.Config.HOME_URL + '/cliente/actualizarCliente',
             params: values,
             method: 'POST',
-            success: function (response, opts) {
+            success: function(response, opts) {
                 var obj = Ext.decode(response.responseText);
                 if (obj.success) {
                     Ext.Msg.alert('Mensaje', obj.mensaje);
@@ -108,7 +104,7 @@ Ext.define('app.view.clientes.form.FormCliente', {
                     me.record.commit();
                 }
             },
-            failure: function (response, opts) {
+            failure: function(response, opts) {
                 console.log('server-side failure with status code ' + response.status);
             }
         });

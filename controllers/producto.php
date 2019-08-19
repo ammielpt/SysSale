@@ -187,8 +187,7 @@ class Producto extends Controller
         echo json_encode($data);
     }
 
-    function reporteProductoExcel()
-    {
+    function reporteProductoExcel(){
         $productos = $this->model->getAllProductosReportExcel();
         $helper = new Sample();
         if ($helper->isCli()) {
@@ -248,7 +247,8 @@ class Producto extends Controller
         // Set active sheet index to the first sheet, so Excel opens this as the first sheet
         $spreadsheet->setActiveSheetIndex(0);
         // Redirect output to a client’s web browser (Xls)
-        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Type: application/vnd.ms-excel; charset=utf-8');
+        header("Content-type:   application/x-msexcel; charset=utf-8");
         header('Content-Disposition: attachment;filename="Reporte Productos.xls"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed

@@ -2,86 +2,92 @@ Ext.define('app.view.clientes.GridClientes', {
     extend: 'Ext.grid.GridPanel',
     xtype: 'gridclientes',
     controller: 'clientecontroller',
-    initComponent: function () {
+    initComponent: function() {
         var me = this,
-                mystore = Ext.create('app.store.clientes.StoreClientes', {
-                    autoLoad: true
-                });
+            mystore = Ext.create('app.store.clientes.StoreClientes', {
+                autoLoad: true
+            });
         Ext.apply(this, {
             store: mystore,
             columns: [
-                {text: 'Razon Social', dataIndex: 'razonSocial', width: 300, flex: 1},
-                {text: 'Ruc', dataIndex: 'ruc', width: 200},
-                {text: 'Direccion', dataIndex: 'direccion', width: 400, flex: 1},
-                {text: 'Fecha Nacimiento', dataIndex: 'fechaNacimiento', width: 150,
+                { text: 'Razon Social', dataIndex: 'razonSocial', width: 300, flex: 1 },
+                { text: 'Ruc', dataIndex: 'ruc', width: 200 },
+                { text: 'Direccion', dataIndex: 'direccion', width: 400, flex: 1 },
+                {
+                    text: 'Fecha Nacimiento',
+                    dataIndex: 'fechaNacimiento',
+                    width: 150,
                     renderer: Ext.util.Format.dateRenderer('d/m/Y')
                 },
                 {
                     xtype: 'actioncolumn',
                     width: 80,
                     items: [{
-                            icon: 'resources/icon/edit_icon.png',
-                            tooltip: 'Editar',
-                            handler: function (grid, rowIndex, colIndex) {
-                                var rec = grid.getStore().getAt(rowIndex);
-                                var win = Ext.create('Ext.Window', {
-                                    modal: true,
-                                    title: "Actualizar cliente",
-                                    height: 580,
-                                    width: 700,
-                                    y: 0,
-                                    items: [Ext.create('app.view.clientes.form.FormCliente', {record: rec})],
-                                    buttons: [
-                                        {
-                                            text: 'Actualizar',
-                                            handler: function () {
-                                                var form = this.up('window').down('formcliente');
-                                                if (form.isValid())
-                                                    form.doUpdate(form.getValues(), win, mystore);
-                                            }
-                                        },
-                                        {
-                                            text: 'Cerrar',
-                                            handler: function () {
-                                                win.close();
-                                            }
+                        icon: 'resources/icon/edit_icon.png',
+                        tooltip: 'Editar',
+                        handler: function(grid, rowIndex, colIndex) {
+                            var rec = grid.getStore().getAt(rowIndex);
+                            var win = Ext.create('Ext.Window', {
+                                modal: true,
+                                title: "Actualizar cliente",
+                                iconCls: 'fa far fa-edit',
+                                height: 580,
+                                width: 700,
+                                y: 0,
+                                items: [Ext.create('app.view.clientes.form.FormCliente', { record: rec })],
+                                buttons: [{
+                                        text: 'Actualizar',
+                                        iconCls: 'fa far fa-save',
+                                        style: 'background-color:green',
+                                        handler: function() {
+                                            var form = this.up('window').down('formcliente');
+                                            if (form.isValid())
+                                                form.doUpdate(form.getValues(), win, mystore);
                                         }
-                                    ]
-                                });
-                                win.show();
-                            }
-                        }, {
-                            icon: 'resources/icon/delete_icon.png',
-                            tooltip: 'Eliminar',
-                            handler: 'eliminarCliente'
-                        }]
+                                    },
+                                    {
+                                        text: 'Cerrar',
+                                        iconCls: 'fa fas fa-times-circle',
+                                        style: 'background-color:red',
+                                        handler: function() {
+                                            win.close();
+                                        }
+                                    }
+                                ]
+                            });
+                            win.show();
+                        }
+                    }, {
+                        icon: 'resources/icon/delete_icon.png',
+                        tooltip: 'Eliminar',
+                        handler: 'eliminarCliente'
+                    }]
                 }
             ],
-            dockedItems: [
-                {
-                    xtype: 'pagingtoolbar',
-                    store: mystore,
-                    dock: 'bottom',
-                    displayInfo: true
-                }
-            ]
+            dockedItems: [{
+                xtype: 'pagingtoolbar',
+                store: mystore,
+                dock: 'bottom',
+                displayInfo: true
+            }]
         });
-        this.tbar = [
-            {
+        this.tbar = [{
                 text: 'Agregar',
                 iconCls: 'fa fa-user-plus',
-                handler: function () {
+                handler: function() {
                     var win = Ext.create('Ext.Window', {
                         modal: true,
                         title: "Agregar Nuevo",
+                        iconCls: 'fa fa-user-plus',
                         height: 580,
                         width: 700,
                         y: 0,
                         items: [Ext.create('app.view.clientes.form.FormCliente')],
-                        buttons: [
-                            {
+                        buttons: [{
                                 text: 'Guardar',
-                                handler: function () {
+                                iconCls: 'fa far fa-save',
+                                style: 'background-color:green',
+                                handler: function() {
                                     var form = this.up('window').down('formcliente');
                                     if (form.isValid()) {
                                         if (!form.getRecord())
@@ -94,7 +100,9 @@ Ext.define('app.view.clientes.GridClientes', {
                             },
                             {
                                 text: 'Cerrar',
-                                handler: function () {
+                                iconCls: 'fa fas fa-times-circle',
+                                style: 'background-color:red',
+                                handler: function() {
                                     win.close();
                                 }
                             }
@@ -105,7 +113,7 @@ Ext.define('app.view.clientes.GridClientes', {
             }, '-', {
                 text: 'Correos',
                 iconCls: 'fa fa-envelope',
-                handler: function () {
+                handler: function() {
                     var record = me.getSelectionModel().getSelection();
                     if (!record[0]) {
                         Ext.Msg.alert("Mensaje", "Por favor seleccione un registro de cliente");
@@ -114,46 +122,49 @@ Ext.define('app.view.clientes.GridClientes', {
                     var win = Ext.create('Ext.Window', {
                         modal: true,
                         title: "Lista de Correos: " + record[0].get('razonSocial'),
+                        iconCls: 'fa fa-envelope',
                         height: 380,
                         width: 500,
                         y: 0,
-                        items: [Ext.create('app.view.clientes.correos.GridCorreos', {rcdCliente: record[0]})],
-                        buttons: [
-                            {
-                                text: 'Cerrar',
-                                handler: function () {
-                                    win.close();
-                                }
+                        items: [Ext.create('app.view.clientes.correos.GridCorreos', { rcdCliente: record[0] })],
+                        buttons: [{
+                            text: 'Cerrar',
+                            iconCls: 'fa fas fa-times-circle',
+                            style: 'background-color:red',
+                            handler: function() {
+                                win.close();
                             }
-                        ]
+                        }]
                     });
                     win.show();
                 }
             }, '-', {
                 text: 'Enviar correo',
-                iconCls: 'fa fa-paperclip',
-                handler: function () {
+                iconCls: 'fa far fa-paper-plane',
+                handler: function() {
                     var winpdf1 = new Ext.Window({
                         title: 'Escribe tu mensaje',
+                        iconCls: 'fa far fa-paper-plane',
                         width: 550,
                         height: 250,
                         modal: true,
-                        buttons: [
-                            {
+                        buttons: [{
                                 text: 'Cancelar',
-                                handler: function () {
+                                iconCls: 'fa fas fa-times-circle',
+                                style: 'background-color:red',
+                                handler: function() {
                                     winpdf1.close();
                                 }
                             },
                             {
-                                text: 'Enviar'
+                                text: 'Enviar',
+                                iconCls: 'fa far fa-paper-plane',
+                                style: 'background-color:green'
                             }
                         ],
-                        items: [
-                            {
-                                xtype: 'htmleditor'
-                            }
-                        ]
+                        items: [{
+                            xtype: 'htmleditor'
+                        }]
                     });
                     winpdf1.show();
                 }
@@ -161,8 +172,8 @@ Ext.define('app.view.clientes.GridClientes', {
             '->', {
                 text: 'Exportar Excel',
                 iconCls: 'fa fa-download',
-                handler: function () {
-                    Ext.Msg.confirm('Mensaje', 'Desea exportar la informacion de clientes en formato excel?', function (respuesta) {
+                handler: function() {
+                    Ext.Msg.confirm('Mensaje', 'Desea exportar la informacion de clientes en formato excel?', function(respuesta) {
                         if (respuesta == 'yes') {
                             window.open(Sales.Config.HOME_URL + '/cliente/reporteClienteExcel', "_self");
                         }
@@ -172,7 +183,7 @@ Ext.define('app.view.clientes.GridClientes', {
             '-', {
                 text: 'Exportar PDF',
                 iconCls: 'fa fa-file-pdf-o',
-                handler: function () {
+                handler: function() {
                     var record = me.getSelectionModel().getSelection();
                     if (!record[0]) {
                         Ext.Msg.alert("Mensaje", "Por favor seleccione un registro de cliente");
@@ -181,6 +192,7 @@ Ext.define('app.view.clientes.GridClientes', {
                     var winpdf1 = new Ext.Window({
                         title: 'PDF Content: ' + record[0].get('razonSocial'),
                         width: 800,
+                        iconCls: 'fa fa-file-pdf-o',
                         height: 600,
                         plain: true,
                         modal: true,
@@ -198,7 +210,7 @@ Ext.define('app.view.clientes.GridClientes', {
             }, '-', {
                 text: 'Adjuntar documentos',
                 iconCls: 'fa fa-paperclip',
-                handler: function () {
+                handler: function() {
                     var record = me.getSelectionModel().getSelection();
                     if (!record[0]) {
                         Ext.Msg.alert("Mensaje", "Por favor seleccione un registro de cliente");
@@ -207,22 +219,24 @@ Ext.define('app.view.clientes.GridClientes', {
                     var win = Ext.create('Ext.Window', {
                         modal: true,
                         title: "Adjuntar documento: " + record[0].get('razonSocial'),
+                        iconCls: 'fa fa-paperclip',
                         height: 380,
                         width: 600,
                         y: 0,
-                        items: [Ext.create('app.view.clientes.documents.GridDocuments', {rcdCliente: record[0]})],
-                        buttons: [
-                            {
-                                text: 'Cerrar',
-                                handler: function () {
-                                    win.close();
-                                }
+                        items: [Ext.create('app.view.clientes.documents.GridDocuments', { rcdCliente: record[0] })],
+                        buttons: [{
+                            text: 'Cerrar',
+                            iconCls: 'fa fas fa-times-circle',
+                            style: 'background-color:red',
+                            handler: function() {
+                                win.close();
                             }
-                        ]
+                        }]
                     });
                     win.show();
                 }
-            }];
+            }
+        ];
         this.callParent(arguments);
     }
 });

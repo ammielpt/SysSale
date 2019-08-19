@@ -61,12 +61,15 @@ Ext.define('app.view.productos.GridProductos', {
                             var win = Ext.create('Ext.Window', {
                                 modal: true,
                                 title: "Actualizar producto",
+                                iconCls: 'fa far fa-edit',
                                 height: 450,
                                 width: 650,
                                 y: 0,
                                 items: [Ext.create('app.view.productos.form.FormProducto', { record: rec })],
                                 buttons: [{
                                         text: 'Actualizar',
+                                        iconCls: 'fa far fa-save',
+                                        style: 'background-color:green',
                                         handler: function() {
                                             var form = this.up('window').down('formproducto');
                                             if (form.isValid())
@@ -75,6 +78,8 @@ Ext.define('app.view.productos.GridProductos', {
                                     },
                                     {
                                         text: 'Cerrar',
+                                        iconCls: 'fa fas fa-times-circle',
+                                        style: 'background-color:red',
                                         handler: function() {
                                             win.close();
                                         }
@@ -104,12 +109,15 @@ Ext.define('app.view.productos.GridProductos', {
                     var win = Ext.create('Ext.Window', {
                         modal: true,
                         title: "Agregar Producto",
+                        iconCls: 'fa far fa-plus-circle',
                         height: 450,
                         width: 650,
                         y: 0,
                         items: [Ext.create('app.view.productos.form.FormProducto')],
                         buttons: [{
                                 text: 'Guardar',
+                                iconCls: 'fa far fa-save',
+                                style: 'background-color:green',
                                 handler: function() {
                                     var form = this.up('window').down('formproducto');
                                     if (form.isValid()) {
@@ -123,6 +131,8 @@ Ext.define('app.view.productos.GridProductos', {
                             },
                             {
                                 text: 'Cerrar',
+                                iconCls: 'fa fas fa-times-circle',
+                                style: 'background-color:red',
                                 handler: function() {
                                     win.close();
                                 }
@@ -155,12 +165,15 @@ Ext.define('app.view.productos.GridProductos', {
                     var win = Ext.create('Ext.Window', {
                         modal: true,
                         title: "Adjuntar documento: " + record[0].get('nombre'),
+                        iconCls: 'fa fa-paperclip',
                         height: 380,
                         width: 600,
                         y: 0,
                         items: [Ext.create('app.view.productos.documents.GridDocuments', { rcdProducto: record[0] })],
                         buttons: [{
                             text: 'Cerrar',
+                            iconCls: 'fa fas fa-times-circle',
+                            style: 'background-color:red',
                             handler: function() {
                                 win.close();
                             }

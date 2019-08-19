@@ -61,7 +61,7 @@ $var = new App();
                 <p class="message">Already registered? <a href="#">Sign In</a></p>
             </form>
             <form class="login-form">
-                <div class="title">Sistema de Ventas v1.0.0</div>
+                <div class="title">Sistema de Ventas<br/><label>Version Carlita</label></div>                
                 <input type="text" placeholder="usuario" id='usuario' />
                 <input type="password" placeholder="password" id="pass" />
                 <button onclick="hacerLogin()">Ingresar</button>
