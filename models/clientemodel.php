@@ -3,6 +3,9 @@
 include_once 'models/cliente.php';
 include_once 'models/telefonomodel.php';
 include_once 'models/correomodel.php';
+include_once 'models/departamento.php';
+include_once 'models/provincia.php';
+include_once 'models/distrito.php';
 include_once 'models/documentocliente.php';
 
 class ClienteModel extends Model
@@ -222,6 +225,64 @@ class ClienteModel extends Model
                 $item->size = $row['size'];
                 $item->url = $row['url'];
                 $item->descripcion = $row['descripcion'];
+                array_push($items, $item);
+            }
+            return $items;
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+            return false;
+        }
+    }
+
+    public function getDepartamentos()
+    {
+        $items = [];
+        try {
+            $query = $this->db->connect()->query("select * from tbl_departamento");
+            while ($row = $query->fetch()) {
+                $item = new Departamento();
+                $item->idDepartamento = $row['idDepa'];
+                $item->departamento = $row['departamento'];
+                array_push($items, $item);
+            }
+            return $items;
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+            return false;
+        }
+    }
+
+    public function getProvinciaById($idDepartamento)
+    {
+        $items = [];
+        try {
+            $query = $this->db->connect()->prepare("select * from tbl_provincia where idDepa=:idDepartamento");
+            $query->execute(["idDepartamento" => $idDepartamento]);
+            while ($row = $query->fetch()) {
+                $item = new Provincia();
+                $item->idProvincia = $row['idProv'];
+                $item->provincia = $row['provincia'];
+                $item->idDepartamento = $row['idDepa'];
+                array_push($items, $item);
+            }
+            return $items;
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+            return false;
+        }
+    }
+
+    public function getDistritoById($idProvincia)
+    {
+        $items = [];
+        try {
+            $query = $this->db->connect()->prepare("select * from tbl_distrito where idProv=:idProvincia");
+            $query->execute(["idProvincia" => $idProvincia]);
+            while ($row = $query->fetch()) {
+                $item = new Distrito();
+                $item->idDistrito = $row['idDist'];
+                $item->distrito = $row['distrito'];
+                $item->idProvincia = $row['idProv'];
                 array_push($items, $item);
             }
             return $items;

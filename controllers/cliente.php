@@ -16,11 +16,6 @@ class Cliente extends Controller
         parent::__construct();
     }
 
-    public function testRest($request, $response, $args)
-    {
-        return 'Home';
-    }
-
     function crearCliente()
     {
         $razonSocial = $_POST['razonSocial'];
@@ -47,6 +42,32 @@ class Cliente extends Controller
         $clientes = $this->model->getAllClientes($rows, $off);
         $cantidadClientes = $this->model->countClientes();
         $data = ["data" => $clientes, "numFilas" => $cantidadClientes, "success" => true];
+        header('Content-Type: application/json');
+        echo json_encode($data);
+    }
+
+    function listarDepartamentos()
+    {
+        $departamentos = $this->model->getDepartamentos();
+        $data = ["data" => $departamentos, "success" => true];
+        header('Content-Type: application/json');
+        echo json_encode($data);
+    }
+
+    function listarProvincia()
+    {
+        $idDepartamento = $_GET['idDepartamento'];
+        $provincias = $this->model->getProvinciaById($idDepartamento);
+        $data = ["data" => $provincias, "success" => true];
+        header('Content-Type: application/json');
+        echo json_encode($data);
+    }
+
+    function listarDistrito()
+    {
+        $idDistrito = $_GET['idProvincia'];
+        $distritos = $this->model->getDistritoById($idDistrito);
+        $data = ["data" => $distritos, "success" => true];
         header('Content-Type: application/json');
         echo json_encode($data);
     }
