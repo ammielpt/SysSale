@@ -3,12 +3,14 @@ Ext.define('app.view.clientes.form.FormCliente', {
     xtype: 'formcliente',
     bodyPadding: 10,
     initComponent: function() {
-        var me = this;
+        var me = this,
+            departamentoStore = Ext.create('app.store.ubigeos.StoreDepartamentos', { autoLoad: true }),
+            provinciaStore = Ext.create('app.store.ubigeos.StoreProvincias', { autoLoad: true }),
+            distritoStore = Ext.create('app.store.ubigeos.StoreDistritos', { autoLoad: true });
         Ext.apply(this, {
             fieldDefaults: {
                 labelAlign: 'right',
                 labelWidth: 110,
-                msgTarget: 'under',
                 anchor: '100%',
                 allowBlank: false
             },
@@ -55,8 +57,99 @@ Ext.define('app.view.clientes.form.FormCliente', {
                     name: 'direccion'
                 },
                 {
+                    xtype: 'container',
+                    layout: 'hbox',
+                    defaults: {
+                        labelAlign: 'top',
+                        width: 215
+                    },
+                    items: [{
+                            xtype: 'combobox',
+                            fieldLabel: 'Departamento',
+                            name: 'idDepartamento',
+                            store: departamentoStore,
+                            displayField: 'departamento',
+                            valueField: 'idDepartamento',
+                            editable: false,
+                            allowBlank: true,
+                            listeners: {
+                                scope: me,
+                                select: function(cbo) {
+                                    var provincias;
+                                    me.down('#cboprovincia').reset();
+                                    me.down('#cbodistrito').reset();
+                                    provincias = me.down('#cboprovincia').store;
+                                    Ext.Ajax.request({
+                                        url: Sales.Config.HOME_URL + '/cliente/listarProvincia',
+                                        method: 'GET',
+                                        params: { idDepartamento: cbo.getValue() },
+                                        success: function(response, opts) {
+                                            var obj = Ext.decode(response.responseText);
+                                            provincias.loadData(obj.data);
+                                        },
+                                        failure: function(response, opts) {
+                                            console.log('server-side failure with status code ' + response.status);
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Provincia',
+                            name: 'idProvincia',
+                            store: provinciaStore,
+                            itemId: 'cboprovincia',
+                            displayField: 'provincia',
+                            valueField: 'idProvincia',
+                            margin: '0 0 0 15',
+                            editable: false,
+                            allowBlank: true,
+                            listeners: {
+                                scope: me,
+                                select: function(cbo) {
+                                    var distritos;
+                                    me.down('#cbodistrito').reset();
+                                    distritos = me.down('#cbodistrito').store;
+                                    Ext.Ajax.request({
+                                        url: Sales.Config.HOME_URL + '/cliente/listarDistrito',
+                                        method: 'GET',
+                                        params: { idProvincia: cbo.getValue() },
+                                        success: function(response, opts) {
+                                            var obj = Ext.decode(response.responseText);
+                                            distritos.loadData(obj.data);
+                                        },
+                                        failure: function(response, opts) {
+                                            console.log('server-side failure with status code ' + response.status);
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Distrito',
+                            name: 'idDistrito',
+                            store: distritoStore,
+                            itemId: 'cbodistrito',
+                            displayField: 'distrito',
+                            valueField: 'idDistrito',
+                            margin: '0 0 0 15',
+                            editable: false,
+                            allowBlank: true,
+                            listeners: {
+                                scope: me,
+                                afterrender: function(cbo) {
+
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
                     xtype: 'fieldset',
                     title: 'Telefonos',
+                    height: 200,
                     instructions: 'Contactos de clientes',
                     items: [{
                         xtype: 'gridtelefonos',
