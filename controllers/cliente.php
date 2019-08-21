@@ -22,8 +22,21 @@ class Cliente extends Controller
         $ruc = $_POST['ruc'];
         $direccion = $_POST['direccion'];
         $fechaNacimiento = $_POST['fechaNacimiento'];
+        $idDepartamento = $_POST['idDepartamento'];
+        $idProvincia = $_POST['idProvincia'];
+        $idDistrito = $_POST['idDistrito'];
+        $idTipoDocumento = 2;
         $mensaje = "";
-        $cliente = $this->model->insertarCliente(["razonSocial" => $razonSocial, "ruc" => $ruc, "direccion" => $direccion, "fechaNacimiento" => $fechaNacimiento]);
+        $cliente = $this->model->insertarCliente([
+            "razonSocial" => $razonSocial,
+            "ruc" => $ruc,
+            "direccion" => $direccion,
+            "fechaNacimiento" => $fechaNacimiento,
+            "idDepartamento" => $idDepartamento,
+            "idProvincia" => $idProvincia,
+            "idDistrito" => $idDistrito,
+            "idTipoDocumento" => $idTipoDocumento
+        ]);
         if ($cliente) {
             $mensaje = "Nuevo cliente  creado";
             $data = ["data" => $cliente, "mensaje" => $mensaje, "success" => true];
@@ -56,20 +69,34 @@ class Cliente extends Controller
 
     function listarProvincia()
     {
-        $idDepartamento = $_GET['idDepartamento'];
-        $provincias = $this->model->getProvinciaById($idDepartamento);
-        $data = ["data" => $provincias, "success" => true];
-        header('Content-Type: application/json');
-        echo json_encode($data);
+        if (isset($_GET['idDepartamento'])) {
+            $idDepartamento = $_GET['idDepartamento'];
+            $provincias = $this->model->getProvinciaById($idDepartamento);
+            $data = ["data" => $provincias, "success" => true];
+            header('Content-Type: application/json');
+            echo json_encode($data);
+        } else {
+            $provincias = $this->model->getProvincias();
+            $data = ["data" => $provincias, "success" => true];
+            header('Content-Type: application/json');
+            echo json_encode($data);
+        }
     }
 
     function listarDistrito()
     {
-        $idDistrito = $_GET['idProvincia'];
-        $distritos = $this->model->getDistritoById($idDistrito);
-        $data = ["data" => $distritos, "success" => true];
-        header('Content-Type: application/json');
-        echo json_encode($data);
+        if (isset($_GET['idProvincia'])) {
+            $idDistrito = $_GET['idProvincia'];
+            $distritos = $this->model->getDistritoById($idDistrito);
+            $data = ["data" => $distritos, "success" => true];
+            header('Content-Type: application/json');
+            echo json_encode($data);
+        } else {
+            $distritos = $this->model->getDistritos();
+            $data = ["data" => $distritos, "success" => true];
+            header('Content-Type: application/json');
+            echo json_encode($data);
+        }
     }
 
     function generarReportePDFCliente($params = null)
@@ -215,7 +242,21 @@ class Cliente extends Controller
         $ruc = $_POST['ruc'];
         $direccion = $_POST['direccion'];
         $fechaNacimiento = $_POST['fechaNacimiento'];
-        if ($this->model->update(['idCliente' => $idCliente, 'razonSocial' => $razonSocial, 'ruc' => $ruc, 'direccion' => $direccion, 'fechaNacimiento' => $fechaNacimiento])) {
+        $idDepartamento = $_POST['idDepartamento'];
+        $idProvincia = $_POST['idProvincia'];
+        $idDistrito = $_POST['idDistrito'];
+        $idTipoDocumento = 2;
+        if ($this->model->update([
+            'idCliente' => $idCliente,
+            'razonSocial' => $razonSocial,
+            'ruc' => $ruc,
+            'direccion' => $direccion,
+            'fechaNacimiento' => $fechaNacimiento,
+            'idDepartamento' => $idDepartamento,
+            'idProvincia' => $idProvincia,
+            'idDistrito' => $idDistrito,
+            'idTipoDocumento' => $idTipoDocumento
+        ])) {
             $mensaje = "Cliente actualizado correctamente";
             $flag = true;
         } else {

@@ -47,7 +47,10 @@ Ext.application({
         'app.view.productos.form.FormProducto',
         'app.view.productos.documents.FormDocument',
         'app.store.productos.StoreNominaciones',
-        'app.store.productos.StoreCategorias'
+        'app.store.productos.StoreCategorias',
+        'app.store.ubigeos.StoreDepartamentos',
+        'app.store.ubigeos.StoreProvincias',
+        'app.store.ubigeos.StoreDistritos'
     ],
 
     // The name of the initial view to create. With the classic toolkit this class

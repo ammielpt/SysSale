@@ -1,6 +1,7 @@
 <?php
 
-class Clientes {
+class Clientes
+{
 
     public $idCliente;
     public $razonSocial;
@@ -9,5 +10,12 @@ class Clientes {
     public $ruc;
     public $numeroTelefono;
     public $fechaNacimiento;
-
+    public $idDepartamento;
+    public $departamento;
+    public $idProvincia;
+    public $provincia;
+    public $idDistrito;
+    public $distrito;
+    public $idTipoDocumento;
+    public $tipoDocumento;
 }

@@ -4,15 +4,64 @@ Ext.define('app.view.clientes.GridClientes', {
     controller: 'clientecontroller',
     initComponent: function() {
         var me = this,
+            departamentoStore = Ext.create('app.store.ubigeos.StoreDepartamentos', { autoLoad: true }),
+            provinciaStore = Ext.create('app.store.ubigeos.StoreProvincias', { autoLoad: true }),
+            distritoStore = Ext.create('app.store.ubigeos.StoreDistritos', { autoLoad: true }),
             mystore = Ext.create('app.store.clientes.StoreClientes', {
                 autoLoad: true
             });
         Ext.apply(this, {
             store: mystore,
             columns: [
-                { text: 'Razon Social', dataIndex: 'razonSocial', width: 300, flex: 1 },
-                { text: 'Ruc', dataIndex: 'ruc', width: 200 },
-                { text: 'Direccion', dataIndex: 'direccion', width: 400, flex: 1 },
+                { text: 'Razon Social', dataIndex: 'razonSocial', width: 300, minWidth: 300, flex: 1 },
+                { text: 'Ruc', dataIndex: 'ruc', width: 200, minWidth: 200 },
+                { text: 'Direccion', dataIndex: 'direccion', width: 400, minWidth: 400, flex: 1 },
+                {
+                    text: 'Departamento',
+                    dataIndex: 'idDepartamento',
+                    width: 150,
+                    renderer: function(value) {
+                        var val;
+                        departamentoStore.each(function(record) {
+                            console.log(record);
+                            if (record.get('idDepartamento') == value) {
+                                val = record.get('departamento');
+                                return;
+                            }
+                        });
+                        return val;
+                    }
+                },
+                {
+                    text: 'Provincia',
+                    dataIndex: 'idProvincia',
+                    width: 150,
+                    renderer: function(value) {
+                        var val;
+                        provinciaStore.each(function(record) {
+                            if (record.get('idProvincia') == value) {
+                                val = record.get('provincia');
+                                return;
+                            }
+                        });
+                        return val;
+                    }
+                },
+                {
+                    text: 'Distrito',
+                    dataIndex: 'idDistrito',
+                    width: 150,
+                    renderer: function(value) {
+                        var val;
+                        distritoStore.each(function(record) {
+                            if (record.get('idDistrito') == value) {
+                                val = record.get('distrito');
+                                return;
+                            }
+                        });
+                        return val;
+                    }
+                },
                 {
                     text: 'Fecha Nacimiento',
                     dataIndex: 'fechaNacimiento',

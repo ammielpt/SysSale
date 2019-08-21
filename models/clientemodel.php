@@ -20,8 +20,17 @@ class ClienteModel extends Model
     {
         $item = new Clientes();
         try {
-            $query = $this->db->connect()->prepare("insert into tbl_clientes(razon_social, ruc, direccion, fecha_nacimiento) values(:razonSocial,:ruc,:direccion,:fechaNacimiento)");
-            $query->execute(['razonSocial' => $datos['razonSocial'], 'ruc' => $datos['ruc'], 'direccion' => $datos['direccion'], 'fechaNacimiento' => $datos['fechaNacimiento']]);
+            $query = $this->db->connect()->prepare("insert into tbl_clientes(razon_social, ruc, direccion, fecha_nacimiento, id_departamento, id_provincia, id_distrito,id_tipo_documento) values(:razonSocial,:ruc,:direccion,:fechaNacimiento,:idDepartamento,:idProvincia,:idDistrito,:idTipoDocumento)");
+            $query->execute([
+                'razonSocial' => $datos['razonSocial'],
+                'ruc' => $datos['ruc'],
+                'direccion' => $datos['direccion'],
+                'fechaNacimiento' => $datos['fechaNacimiento'],
+                'idDepartamento' => $datos['idDepartamento'],
+                'idProvincia' => $datos['idProvincia'],
+                'idDistrito' => $datos['idDistrito'],
+                'idTipoDocumento' => $datos['idTipoDocumento']
+            ]);
             $query1 = $this->db->connect()->query("select * from tbl_clientes where id_cliente=(select max(id_cliente) as id_cliente from tbl_clientes)");
             while ($row = $query1->fetch()) {
                 $item->idCliente = $row['id_cliente'];
@@ -29,6 +38,10 @@ class ClienteModel extends Model
                 $item->ruc = $row['ruc'];
                 $item->direccion = $row['direccion'];
                 $item->fechaNacimiento = $row['fecha_nacimiento'];
+                $item->idDepartamento = $row['id_departamento'];
+                $item->idProvincia = $row['id_provincia'];
+                $item->idDistrito = $row['id_distrito'];
+                $item->idTipoDocumento = $row['id_tipo_documento'];
             }
             return $item;
         } catch (PDOException $exc) {
@@ -41,7 +54,11 @@ class ClienteModel extends Model
     {
         $items = [];
         try {
-            $query = $this->db->connect()->query("select * from tbl_clientes where activo=1 order by razon_social limit $rows offset $off");
+            $query = $this->db->connect()->query("SELECT tc.*, td.departamento, tp.provincia, tdist.distrito, tdoc.tipo
+            FROM bd_sales.tbl_clientes as tc left join tbl_departamento td on tc.id_departamento=td.id_departamento
+            left join tbl_provincia tp on tc.id_provincia = tp.id_provincia left join tbl_distrito tdist
+            on tdist.id_distrito=tc.id_distrito left join tbl_tipo_documento tdoc on tc.id_tipo_documento = tdoc.id_tipo
+            where tc.activo=1 order by razon_social limit $rows offset $off");
             while ($row = $query->fetch()) {
                 $item = new Clientes();
                 $item->idCliente = $row['id_cliente'];
@@ -49,6 +66,14 @@ class ClienteModel extends Model
                 $item->ruc = $row['ruc'];
                 $item->direccion = $row['direccion'];
                 $item->fechaNacimiento = $row['fecha_nacimiento'];
+                $item->idDepartamento = $row['id_departamento'];
+                $item->departamento = $row['departamento'];
+                $item->idProvincia = $row['id_provincia'];
+                $item->provincia = $row['provincia'];
+                $item->idDistrito = $row['id_distrito'];
+                $item->distrito = $row['distrito'];
+                $item->idTipoDocumento = $row['id_tipo_documento'];
+                $item->tipoDocumento = $row['tipo'];
                 array_push($items, $item);
             }
             return $items;
@@ -160,13 +185,19 @@ class ClienteModel extends Model
     public function update($item)
     {
         try {
-            $query = $this->db->connect()->prepare("update tbl_clientes set razon_social=:razonSocial, ruc=:ruc, direccion=:direccion, fecha_nacimiento=:fechaNacimiento where id_cliente=:idCliente");
+            $query = $this->db->connect()->prepare("update tbl_clientes set razon_social=:razonSocial, ruc=:ruc, direccion=:direccion,
+             fecha_nacimiento=:fechaNacimiento, id_departamento=:idDepartamento, id_provincia=:idProvincia, id_distrito=:idDistrito,
+             id_tipo_documento=:idTipoDocumento  where id_cliente=:idCliente");
             $query->execute([
                 "razonSocial" => $item['razonSocial'],
                 "ruc" => $item['ruc'],
                 "direccion" => $item['direccion'],
                 "fechaNacimiento" => $item['fechaNacimiento'],
-                "idCliente" => $item['idCliente']
+                "idCliente" => $item['idCliente'],
+                "idDepartamento" => $item['idDepartamento'],
+                "idProvincia" => $item['idProvincia'],
+                "idDistrito" => $item['idDistrito'],
+                "idTipoDocumento" => $item['idTipoDocumento']
             ]);
             return true;
         } catch (PDOException $exc) {
@@ -241,7 +272,7 @@ class ClienteModel extends Model
             $query = $this->db->connect()->query("select * from tbl_departamento");
             while ($row = $query->fetch()) {
                 $item = new Departamento();
-                $item->idDepartamento = $row['idDepa'];
+                $item->idDepartamento = $row['id_departamento'];
                 $item->departamento = $row['departamento'];
                 array_push($items, $item);
             }
@@ -256,13 +287,32 @@ class ClienteModel extends Model
     {
         $items = [];
         try {
-            $query = $this->db->connect()->prepare("select * from tbl_provincia where idDepa=:idDepartamento");
+            $query = $this->db->connect()->prepare("select * from tbl_provincia where id_departamento=:idDepartamento");
             $query->execute(["idDepartamento" => $idDepartamento]);
             while ($row = $query->fetch()) {
                 $item = new Provincia();
-                $item->idProvincia = $row['idProv'];
+                $item->idProvincia = $row['id_provincia'];
                 $item->provincia = $row['provincia'];
-                $item->idDepartamento = $row['idDepa'];
+                $item->idDepartamento = $row['id_departamento'];
+                array_push($items, $item);
+            }
+            return $items;
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+            return false;
+        }
+    }
+
+    public function getProvincias()
+    {
+        $items = [];
+        try {
+            $query = $this->db->connect()->query("select * from tbl_provincia");
+            while ($row = $query->fetch()) {
+                $item = new Provincia();
+                $item->idProvincia = $row['id_provincia'];
+                $item->provincia = $row['provincia'];
+                $item->idDepartamento = $row['id_departamento'];
                 array_push($items, $item);
             }
             return $items;
@@ -276,13 +326,32 @@ class ClienteModel extends Model
     {
         $items = [];
         try {
-            $query = $this->db->connect()->prepare("select * from tbl_distrito where idProv=:idProvincia");
+            $query = $this->db->connect()->prepare("select * from tbl_distrito where id_provincia=:idProvincia");
             $query->execute(["idProvincia" => $idProvincia]);
             while ($row = $query->fetch()) {
                 $item = new Distrito();
-                $item->idDistrito = $row['idDist'];
+                $item->idDistrito = $row['id_distrito'];
                 $item->distrito = $row['distrito'];
-                $item->idProvincia = $row['idProv'];
+                $item->idProvincia = $row['id_provincia'];
+                array_push($items, $item);
+            }
+            return $items;
+        } catch (PDOException $exc) {
+            echo $exc->getMessage();
+            return false;
+        }
+    }
+
+    public function getDistritos()
+    {
+        $items = [];
+        try {
+            $query = $this->db->connect()->query("select * from tbl_distrito");
+            while ($row = $query->fetch()) {
+                $item = new Distrito();
+                $item->idDistrito = $row['id_distrito'];
+                $item->distrito = $row['distrito'];
+                $item->idProvincia = $row['id_provincia'];
                 array_push($items, $item);
             }
             return $items;

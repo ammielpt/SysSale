@@ -134,7 +134,10 @@
         "app.model.productos.DocumentModel": "app/model/productos/DocumentModel.js",
         "app.store.productos.StoreProductos": "app/store/productos/StoreProductos.js",
         "app.store.productos.StoreCategorias": "app/store/productos/StoreCategorias.js",
-        "app.view.productos.documents.FormDocument": "classic/src/view/productos/documents/FormDocument.js"
+        "app.view.productos.documents.FormDocument": "classic/src/view/productos/documents/FormDocument.js",
+        "app.store.ubigeos.StoreDepartamentos": "app/store/ubigeos/StoreDepartamentos.js",
+        "app.store.ubigeos.StoreProvincias": "app/store/ubigeos/StoreProvincias.js",
+        "app.store.ubigeos.StoreDistritos": "app/store/ubigeos/StoreDistritos.js"
     },
     "classes": {
         "Ext.AbstractManager": {
