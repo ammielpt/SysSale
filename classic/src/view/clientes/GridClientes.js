@@ -7,9 +7,7 @@ Ext.define('app.view.clientes.GridClientes', {
             departamentoStore = Ext.create('app.store.ubigeos.StoreDepartamentos', { autoLoad: true }),
             provinciaStore = Ext.create('app.store.ubigeos.StoreProvincias', { autoLoad: true }),
             distritoStore = Ext.create('app.store.ubigeos.StoreDistritos', { autoLoad: true }),
-            mystore = Ext.create('app.store.clientes.StoreClientes', {
-                autoLoad: true
-            });
+            mystore = Ext.create('app.store.clientes.StoreClientes');
         Ext.apply(this, {
             store: mystore,
             columns: [
@@ -21,14 +19,15 @@ Ext.define('app.view.clientes.GridClientes', {
                     dataIndex: 'idDepartamento',
                     width: 150,
                     renderer: function(value) {
-                        var val;
-                        departamentoStore.each(function(record) {
-                            console.log(record);
-                            if (record.get('idDepartamento') == value) {
-                                val = record.get('departamento');
-                                return;
-                            }
-                        });
+                        var val = "";
+                        if (departamentoStore.isLoaded()) {
+                            departamentoStore.each(function(record) {
+                                if (record.get('idDepartamento') == value) {
+                                    val = record.get('departamento');
+                                    return;
+                                }
+                            });
+                        }
                         return val;
                     }
                 },
@@ -37,13 +36,15 @@ Ext.define('app.view.clientes.GridClientes', {
                     dataIndex: 'idProvincia',
                     width: 150,
                     renderer: function(value) {
-                        var val;
-                        provinciaStore.each(function(record) {
-                            if (record.get('idProvincia') == value) {
-                                val = record.get('provincia');
-                                return;
-                            }
-                        });
+                        var val = "";
+                        if (provinciaStore.isLoaded()) {
+                            provinciaStore.each(function(record) {
+                                if (record.get('idProvincia') == value) {
+                                    val = record.get('provincia');
+                                    return;
+                                }
+                            });
+                        }
                         return val;
                     }
                 },
@@ -52,13 +53,15 @@ Ext.define('app.view.clientes.GridClientes', {
                     dataIndex: 'idDistrito',
                     width: 150,
                     renderer: function(value) {
-                        var val;
-                        distritoStore.each(function(record) {
-                            if (record.get('idDistrito') == value) {
-                                val = record.get('distrito');
-                                return;
-                            }
-                        });
+                        var val = "";
+                        if (distritoStore.isLoaded()) {
+                            distritoStore.each(function(record) {
+                                if (record.get('idDistrito') == value) {
+                                    val = record.get('distrito');
+                                    return;
+                                }
+                            });
+                        }
                         return val;
                     }
                 },
@@ -287,5 +290,8 @@ Ext.define('app.view.clientes.GridClientes', {
             }
         ];
         this.callParent(arguments);
+        distritoStore.on('load', function() {
+            mystore.load();
+        });
     }
 });

@@ -5,8 +5,8 @@ Ext.define('app.view.clientes.form.FormCliente', {
     initComponent: function() {
         var me = this,
             departamentoStore = Ext.create('app.store.ubigeos.StoreDepartamentos', { autoLoad: true }),
-            provinciaStore = Ext.create('app.store.ubigeos.StoreProvincias', { autoLoad: true }),
-            distritoStore = Ext.create('app.store.ubigeos.StoreDistritos', { autoLoad: true });
+            provinciaStore = Ext.create('app.store.ubigeos.StoreProvincias'),
+            distritoStore = Ext.create('app.store.ubigeos.StoreDistritos');
         Ext.apply(this, {
             fieldDefaults: {
                 labelAlign: 'right',
@@ -72,20 +72,44 @@ Ext.define('app.view.clientes.form.FormCliente', {
                             valueField: 'idDepartamento',
                             editable: false,
                             allowBlank: true,
+                            queryMode: 'local',
                             listeners: {
                                 scope: me,
                                 select: function(cbo) {
-                                    var provincias;
-                                    me.down('#cboprovincia').reset();
-                                    me.down('#cbodistrito').reset();
-                                    provincias = me.down('#cboprovincia').store;
+                                    var provincias = me.down('#cboprovincia'),
+                                        distritos = me.down('#cbodistrito');
+                                    provincias.reset();
+                                    distritos.reset();
+                                    provincias.store.removeAll();
+                                    distritos.store.removeAll();
                                     Ext.Ajax.request({
                                         url: Sales.Config.HOME_URL + '/cliente/listarProvincia',
                                         method: 'GET',
                                         params: { idDepartamento: cbo.getValue() },
                                         success: function(response, opts) {
                                             var obj = Ext.decode(response.responseText);
-                                            provincias.loadData(obj.data);
+                                            provincias.store.loadData(obj.data);
+                                            var rcd = provincias.store.getById(parseInt(provincias.getValue()));
+                                            provincias.setValue(rcd.get('idProvincia'));
+                                        },
+                                        failure: function(response, opts) {
+                                            console.log('server-side failure with status code ' + response.status);
+                                        }
+                                    });
+                                },
+                                afterrender: function(cmp) {
+                                    var provincias = this.down("#cboprovincia");
+                                    Ext.Ajax.request({
+                                        url: Sales.Config.HOME_URL + '/cliente/listarProvincia',
+                                        method: 'GET',
+                                        params: { idDepartamento: cmp.getValue() },
+                                        success: function(response, opts) {
+                                            var obj = Ext.decode(response.responseText);
+                                            provincias.store.loadData(obj.data);
+                                            provincias.store.each(function(record) {
+                                                if (record.get('idProvincia') == provincias.getValue())
+                                                    provincias.setValue(record.get('idProvincia'));
+                                            });
                                         },
                                         failure: function(response, opts) {
                                             console.log('server-side failure with status code ' + response.status);
@@ -105,19 +129,41 @@ Ext.define('app.view.clientes.form.FormCliente', {
                             margin: '0 0 0 15',
                             editable: false,
                             allowBlank: true,
+                            queryMode: 'local',
                             listeners: {
                                 scope: me,
                                 select: function(cbo) {
-                                    var distritos;
-                                    me.down('#cbodistrito').reset();
-                                    distritos = me.down('#cbodistrito').store;
+                                    var distritos = me.down('#cbodistrito');
+                                    distritos.reset();
+                                    distritos.store.removeAll();
                                     Ext.Ajax.request({
                                         url: Sales.Config.HOME_URL + '/cliente/listarDistrito',
                                         method: 'GET',
                                         params: { idProvincia: cbo.getValue() },
                                         success: function(response, opts) {
                                             var obj = Ext.decode(response.responseText);
-                                            distritos.loadData(obj.data);
+                                            distritos.store.loadData(obj.data);
+                                            var rcd = distritos.store.getById(parseInt(distritos.getValue()));
+                                            distritos.setValue(rcd.get('idDistrito'));
+                                        },
+                                        failure: function(response, opts) {
+                                            console.log('server-side failure with status code ' + response.status);
+                                        }
+                                    });
+                                },
+                                afterrender: function(cmp) {
+                                    var distritos = this.down("#cbodistrito");
+                                    Ext.Ajax.request({
+                                        url: Sales.Config.HOME_URL + '/cliente/listarDistrito',
+                                        method: 'GET',
+                                        params: { idProvincia: cmp.getValue() },
+                                        success: function(response, opts) {
+                                            var obj = Ext.decode(response.responseText);
+                                            distritos.store.loadData(obj.data);
+                                            distritos.store.each(function(record) {
+                                                if (record.get('idDistrito') == distritos.getValue())
+                                                    distritos.setValue(record.get('idDistrito'));
+                                            });
                                         },
                                         failure: function(response, opts) {
                                             console.log('server-side failure with status code ' + response.status);
@@ -137,12 +183,7 @@ Ext.define('app.view.clientes.form.FormCliente', {
                             margin: '0 0 0 15',
                             editable: false,
                             allowBlank: true,
-                            listeners: {
-                                scope: me,
-                                afterrender: function(cbo) {
-
-                                }
-                            }
+                            queryMode: 'local'
                         }
                     ]
                 },
