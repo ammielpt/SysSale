@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 14, 2019 at 03:36 PM
+-- Generation Time: Aug 23, 2019 at 09:34 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -21,6 +21,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `bd_sales`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_caja`
+--
+
+CREATE TABLE `tbl_caja` (
+  `id_caja` int(11) NOT NULL,
+  `id_tienda` int(11) NOT NULL,
+  `nombre_caja` varchar(500) COLLATE utf8_spanish_ci NOT NULL,
+  `id_responsable` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -54,59 +67,66 @@ CREATE TABLE `tbl_clientes` (
   `razon_social` varchar(300) COLLATE utf8_spanish_ci NOT NULL,
   `ruc` varchar(11) COLLATE utf8_spanish_ci NOT NULL,
   `direccion` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
-  `fecha_nacimiento` date NOT NULL
+  `fecha_nacimiento` date NOT NULL,
+  `id_departamento` int(11) NOT NULL,
+  `id_provincia` int(11) NOT NULL,
+  `id_distrito` int(11) NOT NULL,
+  `activo` int(11) NOT NULL DEFAULT '1',
+  `id_tipo_documento` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Dumping data for table `tbl_clientes`
 --
 
-INSERT INTO `tbl_clientes` (`id_cliente`, `razon_social`, `ruc`, `direccion`, `fecha_nacimiento`) VALUES
-(1, 'Ammiel Pajuelo EIRL', '10476853457', 'Av.Tupac Amaru Mz B Lt 6 Ucayali-Pucallpa-Coronel Portillo', '2019-06-27'),
-(3, 'Hermanos Silva SAC', '98765432112', 'Jr.El por venir 588', '1999-02-04'),
-(4, 'PRODUCTOS EXTRAGEL Y UNIVERSAL S.A.C.', '20100170842', 'JR. RIO TUMBES NRO. 215 URB. LAS MORAS LIMA - LIMA - SAN LUIS', '1969-12-16'),
-(5, 'AVICOLA LA GLORIA E.I.R.L.', '20315357510', 'AV. GRAU NRO. 351 CERCADO LA LIBERTAD - VIRU - VIRU', '1983-04-06'),
-(6, 'SOCIAL TECHNOLOGY GROUP S.A.C.', '20555188316', 'CAL.NICANOR ARTEAGA NRO. 340 DPTO. 303 URB. JACARANDA II SECTOR 4 LIMA - LIMA - SAN BORJA', '2000-01-25'),
-(7, 'BAZAAR APPLE S.R.LTDA.', '20343644354', '	JR. ESPERANZA NRO. 117 LIMA - LIMA - MIRAFLORES', '2003-03-04'),
-(8, 'FERRETEROS ASOCIADOS S.A.', '20113234131', 'CAL.GRANADA NRO. 469 INT. D LIMA - LIMA - PUEBLO LIBRE (MAGDALENA VIEJA)', '2018-12-12'),
-(9, 'COMPUTACION GRAFICA Y PUBLICITARIA EIRL', '20376665641', 'AV. PETIT THOUARS NRO. 1879 INT. F LIMA - LIMA - LINCE', '2018-08-07'),
-(10, 'HERMANOS REVILLA E.I.R.L.', '20480999984', 'AV. FRANCISCO PIZARRO NRO. 101 SEMI-RURAL PACHACUTEC AREQUIPA - AREQUIPA - CERRO COLORADO', '2005-09-01'),
-(11, 'rewwwwww', '6543322', 'adadaggggg', '2016-10-04'),
-(12, 'rewwqqqqqq', '455666543', 'asasaasas', '2019-05-01'),
-(13, 'yyyyyyy', '5443333', 'dddddfffff', '2014-10-04'),
-(14, 'CASA 03 ALTERNATIVA EN LA CONSTRUCCION SOCIEDAD ANONIMA CERRADA - CASA 03 SAC', '20571538572', 'MZA. C LOTE. 10 URB. JARDIN (A 50 MTS DE LA LOSA DEPORTIVA, 1ER PISO) LIMA - BARRANCA - BARRANCA', '1998-10-01'),
-(15, 'FERRETERIA AVIACION EIRL', '20434127361', 'AV. AVIACION NRO. 627 LIMA - LIMA - LA VICTORIA', '2000-10-04'),
-(16, 'COMPUTADORAS Y ANEXOS SRLTDA', '20377010419', 'CAL.CONDE DE SALVATIERRA NRO. 103 INT. 202 URB. LA VIRREYNA (DPTO. 202- ALT. CDA 42 AV TOMAS MARSANO)', '1989-10-04'),
-(17, 'EL CENTRO DEL ABARROTE E.I.R.L.', '20513575158', 'MZA. D27 LOTE. 18 A.H. BOCANEGRA (ALTURA 42 AV. PERU) PROV. CONST. DEL CALLAO - PROV. CONST. DEL CALLAO - CALLAO', '2007-05-01'),
-(18, 'ewwqqqqq', '4333444', 'asasasashhh', '2005-10-04'),
-(19, 'dddddd', '666555', 'sdsdsd', '2008-10-04'),
-(20, 'yttttyy', '4332222', 'redssss', '2001-10-04'),
-(21, 'BAZAR LIBRERIA EL TRIUNFO E.I.R.L.', '20494929105', 'CAL.JOSE MARIA MEJIA NRO. 1117 URB. CASCO URBANO (FRENTE AL PEDAGOGICO)', '1999-10-04'),
-(22, 'qqqqqwaaaa', '23232323', 'sasasas', '1996-10-04'),
-(23, 'qassssssss', '2121212', 'rrrrrrr', '2015-10-04'),
-(24, 'uuuuuuuuuu', '22334444', 'sdsdsdsd', '1994-09-04'),
-(25, 'uuuuuuuu', '55555555', 'sdsfsfsfsf', '2019-07-03'),
-(26, 'rrreewwwww', '678997000', 'ffggggg', '1983-07-03'),
-(27, 'qqqqqqeee', '5432356', 'sdsdsdsd', '1991-07-03'),
-(28, 'rrrreeeeee', '67788889', 'sdsdsdsd', '2019-07-25'),
-(29, 'HERMANOS PAJUELOS SAC', '456598908', 'AV TUPAC AMARU MZ B LT 6 PUCALLPA', '2019-07-03'),
-(30, 'CAMPO MARTE SAC', '987653421', 'AV EVITAMIENTO 2333', '0000-00-00'),
-(31, 'RESSDDDD', '333333333', 'SSSSSSSSSSSS', '0000-00-00'),
-(32, 'RESSDDDD', '333333333', 'SSSSSSSSSSSS', '0000-00-00'),
-(33, 'RESSDDDDewwss', '33333333366', 'SSSSSSSSSSSSaaaaa', '0000-00-00'),
-(34, 'ttttyyyyyy', '5555555555', 'dsssssss', '0000-00-00'),
-(35, 'ttttyyyyyytttttt', '5555555555', 'dsssssss', '0000-00-00'),
-(36, 'asasasasas', '556565656', '11111111', '0000-00-00'),
-(37, 'awqwqwqw', '543213444', 'qwqwqwqw', '0000-00-00'),
-(38, 'awqwqwqw', '543213444', 'qwqwqwqw', '0000-00-00'),
-(39, 'jhghgftfgyuij', '777777777', 'iuytyfg8ujjjj', '2019-07-03'),
-(40, 'eerrtttyyy', '55566666666', 'qqqqqqqqqq', '2019-07-01'),
-(41, 'eerrtttyyy', '55566666666', 'qqqqqqqqqq', '2019-07-01'),
-(42, 'eweeeee45555', '87654444444', '32sssssssiugfdd', '2019-07-12'),
-(43, 'qwqwqw1212', '54322222', 'asassas22', '2019-07-16'),
-(44, 'FEDERICO BALTAZAR SAC', '55667777777', 'AV LOS ROBLES 5555', '2015-07-07'),
-(45, 'ROBERTO CARLOS EIRL', '5555555555', 'CALLE GUILLERMO MOORE 456', '2016-04-01'),
-(46, 'YUTATAN SAC', '22222222222', 'ASAKSLAKSL ASLKALSKALS', '2015-07-01');
+INSERT INTO `tbl_clientes` (`id_cliente`, `razon_social`, `ruc`, `direccion`, `fecha_nacimiento`, `id_departamento`, `id_provincia`, `id_distrito`, `activo`, `id_tipo_documento`) VALUES
+(1, 'Ammiel Pajuelo EIRL', '10476853457', 'Av.Tupac Amaru Mz B Lt 6 Ucayali-Pucallpa-Coronel Portillo', '2019-06-27', 8, 67, 684, 1, 2),
+(3, 'Hermanos Silva SAC', '98765432112', 'Jr.El por venir 588', '1999-02-04', 0, 0, 0, 1, 2),
+(4, 'PRODUCTOS EXTRAGEL Y UNIVERSAL S.A.C.', '20100170842', 'JR. RIO TUMBES NRO. 215 URB. LAS MORAS LIMA - LIMA - SAN LUIS', '1969-12-16', 0, 0, 0, 1, 2),
+(5, 'AVICOLA LA GLORIA E.I.R.L.', '20315357510', 'AV. GRAU NRO. 351 CERCADO LA LIBERTAD - VIRU - VIRU', '1983-04-06', 0, 0, 0, 1, 2),
+(6, 'SOCIAL TECHNOLOGY GROUP S.A.C.', '20555188316', 'CAL.NICANOR ARTEAGA NRO. 340 DPTO. 303 URB. JACARANDA II SECTOR 4 LIMA - LIMA - SAN BORJA', '2000-01-25', 0, 0, 0, 1, 2),
+(7, 'BAZAAR APPLE S.R.LTDA.', '20343644354', '	JR. ESPERANZA NRO. 117 LIMA - LIMA - MIRAFLORES', '2003-03-04', 0, 0, 0, 1, 2),
+(8, 'FERRETEROS ASOCIADOS S.A.', '20113234131', 'CAL.GRANADA NRO. 469 INT. D LIMA - LIMA - PUEBLO LIBRE (MAGDALENA VIEJA)', '2018-12-12', 0, 0, 0, 1, 2),
+(9, 'COMPUTACION GRAFICA Y PUBLICITARIA EIRL', '20376665641', 'AV. PETIT THOUARS NRO. 1879 INT. F LIMA - LIMA - LINCE', '2018-08-07', 0, 0, 0, 1, 2),
+(10, 'HERMANOS REVILLA E.I.R.L.', '20480999984', 'AV. FRANCISCO PIZARRO NRO. 101 SEMI-RURAL PACHACUTEC AREQUIPA - AREQUIPA - CERRO COLORADO', '2005-09-01', 0, 0, 0, 1, 2),
+(11, 'rewwwwww', '6543322', 'adadaggggg', '2016-10-04', 0, 0, 0, 1, 2),
+(12, 'rewwqqqqqq', '455666543', 'asasaasas', '2019-05-01', 0, 0, 0, 1, 2),
+(13, 'yyyyyyy', '5443333', 'dddddfffff', '2014-10-04', 0, 0, 0, 1, 2),
+(14, 'CASA 03 ALTERNATIVA EN LA CONSTRUCCION SOCIEDAD ANONIMA CERRADA - CASA 03 SAC', '20571538572', 'MZA. C LOTE. 10 URB. JARDIN (A 50 MTS DE LA LOSA DEPORTIVA, 1ER PISO) LIMA - BARRANCA - BARRANCA', '1998-10-01', 1, 4, 5, 1, 2),
+(15, 'FERRETERIA AVIACION EIRL', '20434127361', 'AV. AVIACION NRO. 627 LIMA - LIMA - LA VICTORIA', '2000-10-04', 0, 0, 0, 1, 2),
+(16, 'COMPUTADORAS Y ANEXOS SRLTDA', '20377010419', 'CAL.CONDE DE SALVATIERRA NRO. 103 INT. 202 URB. LA VIRREYNA (DPTO. 202- ALT. CDA 42 AV TOMAS MARSANO)', '1989-10-04', 0, 0, 0, 1, 2),
+(17, 'EL CENTRO DEL ABARROTE E.I.R.L.', '20513575158', 'MZA. D27 LOTE. 18 A.H. BOCANEGRA (ALTURA 42 AV. PERU) PROV. CONST. DEL CALLAO - PROV. CONST. DEL CALLAO - CALLAO', '2007-05-01', 0, 0, 0, 1, 2),
+(18, 'ewwqqqqq', '4333444', 'asasasashhh', '2005-10-04', 0, 0, 0, 1, 2),
+(19, 'dddddd', '666555', 'sdsdsd', '2008-10-04', 0, 0, 0, 1, 2),
+(20, 'yttttyy', '4332222', 'redssss', '2001-10-04', 0, 0, 0, 1, 2),
+(21, 'BAZAR LIBRERIA EL TRIUNFO E.I.R.L.', '20494929105', 'CAL.JOSE MARIA MEJIA NRO. 1117 URB. CASCO URBANO (FRENTE AL PEDAGOGICO)', '1999-10-04', 0, 0, 0, 1, 2),
+(22, 'qqqqqwaaaa', '23232323', 'sasasas', '1996-10-04', 0, 0, 0, 1, 2),
+(23, 'qassssssss', '2121212', 'rrrrrrr', '2015-10-04', 0, 0, 0, 1, 2),
+(24, 'uuuuuuuuuu', '22334444', 'sdsdsdsd', '1994-09-04', 0, 0, 0, 1, 2),
+(25, 'uuuuuuuu', '55555555', 'sdsfsfsfsf', '2019-07-03', 0, 0, 0, 1, 2),
+(26, 'rrreewwwww', '678997000', 'ffggggg', '1983-07-03', 0, 0, 0, 1, 2),
+(27, 'qqqqqqeee', '5432356', 'sdsdsdsd', '1991-07-03', 0, 0, 0, 1, 2),
+(28, 'rrrreeeeee', '67788889', 'sdsdsdsd', '2019-07-25', 0, 0, 0, 1, 2),
+(29, 'HERMANOS PAJUELOS SAC', '456598908', 'AV TUPAC AMARU MZ B LT 6 PUCALLPA', '2019-07-03', 0, 0, 0, 1, 2),
+(30, 'CAMPO MARTE SAC', '987653421', 'AV EVITAMIENTO 2333', '0000-00-00', 0, 0, 0, 1, 2),
+(31, 'RESSDDDD', '333333333', 'SSSSSSSSSSSS', '0000-00-00', 0, 0, 0, 1, 2),
+(32, 'RESSDDDD', '333333333', 'SSSSSSSSSSSS', '0000-00-00', 0, 0, 0, 1, 2),
+(33, 'RESSDDDDewwss', '33333333366', 'SSSSSSSSSSSSaaaaa', '0000-00-00', 0, 0, 0, 1, 2),
+(34, 'ttttyyyyyy', '5555555555', 'dsssssss', '0000-00-00', 0, 0, 0, 1, 2),
+(35, 'ttttyyyyyytttttt', '5555555555', 'dsssssss', '0000-00-00', 0, 0, 0, 1, 2),
+(36, 'asasasasas', '556565656', '11111111', '2019-08-07', 20, 157, 1574, 1, 2),
+(37, 'awqwqwqw', '543213444', 'qwqwqwqw', '0000-00-00', 0, 0, 0, 1, 2),
+(38, 'awqwqwqw', '543213444', 'qwqwqwqw', '0000-00-00', 0, 0, 0, 1, 2),
+(39, 'jhghgftfgyuij', '777777777', 'iuytyfg8ujjjj', '2019-07-03', 0, 0, 0, 1, 2),
+(40, 'eerrtttyyy', '55566666666', 'qqqqqqqqqq', '2019-07-01', 0, 0, 0, 1, 2),
+(41, 'eerrtttyyy', '55566666666', 'qqqqqqqqqq', '2019-07-01', 0, 0, 0, 1, 2),
+(42, 'eweeeee45555', '87654444444', '32sssssssiugfdd', '2019-07-12', 0, 0, 0, 1, 2),
+(43, 'qwqwqw1212', '54322222', 'asassas22', '2019-07-16', 0, 0, 0, 1, 2),
+(44, 'FEDERICO BALTAZAR SAC', '55667777777', 'AV LOS ROBLES 5555', '2015-07-07', 0, 0, 0, 1, 2),
+(45, 'ROBERTO CARLOS EIRL', '5555555555', 'CALLE GUILLERMO MOORE 456', '2016-04-01', 0, 0, 0, 1, 2),
+(46, 'YUTATAN SAC', '22222222222', 'ASAKSLAKSL ASLKALSKALS', '2015-07-01', 0, 0, 0, 1, 2),
+(49, 'DESKTOP', '123456', 'DESKTOP', '2019-08-20', 10, 94, 940, 1, 2),
+(50, 'DESKTOP123', '1234567', 'DESKTOP123', '2019-08-20', 1, 3, 3, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -171,7 +191,7 @@ INSERT INTO `tbl_correos` (`id_correo`, `correo`, `id_cliente`, `principal`, `ac
 --
 
 CREATE TABLE `tbl_departamento` (
-  `idDepa` int(5) NOT NULL DEFAULT '0',
+  `id_departamento` int(5) NOT NULL DEFAULT '0',
   `departamento` varchar(50) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -179,7 +199,7 @@ CREATE TABLE `tbl_departamento` (
 -- Dumping data for table `tbl_departamento`
 --
 
-INSERT INTO `tbl_departamento` (`idDepa`, `departamento`) VALUES
+INSERT INTO `tbl_departamento` (`id_departamento`, `departamento`) VALUES
 (1, 'AMAZONAS'),
 (2, 'ANCASH'),
 (3, 'APURIMAC'),
@@ -228,16 +248,16 @@ CREATE TABLE `tbl_detalle_comprobante` (
 --
 
 CREATE TABLE `tbl_distrito` (
-  `idDist` int(5) NOT NULL DEFAULT '0',
+  `id_distrito` int(5) NOT NULL DEFAULT '0',
   `distrito` varchar(50) DEFAULT NULL,
-  `idProv` int(5) DEFAULT NULL
+  `id_provincia` int(5) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `tbl_distrito`
 --
 
-INSERT INTO `tbl_distrito` (`idDist`, `distrito`, `idProv`) VALUES
+INSERT INTO `tbl_distrito` (`id_distrito`, `distrito`, `id_provincia`) VALUES
 (1, 'CHACHAPOYAS', 1),
 (2, 'ASUNCION', 1),
 (3, 'BALSAS', 1),
@@ -2102,6 +2122,30 @@ INSERT INTO `tbl_documento_cliente` (`id_documento`, `id_cliente`, `nombre`, `si
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_documento_producto`
+--
+
+CREATE TABLE `tbl_documento_producto` (
+  `id_documento` int(11) NOT NULL,
+  `id_producto` int(11) NOT NULL,
+  `nombre` varchar(500) COLLATE utf8_spanish_ci NOT NULL,
+  `size` int(11) NOT NULL,
+  `url` varchar(500) COLLATE utf8_spanish_ci NOT NULL,
+  `descripcion` varchar(500) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `activo` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Dumping data for table `tbl_documento_producto`
+--
+
+INSERT INTO `tbl_documento_producto` (`id_documento`, `id_producto`, `nombre`, `size`, `url`, `descripcion`, `activo`) VALUES
+(1, 5, '01simple.xlsx', 6463, 'resources/files/productos/01simple.xlsx', 'sasas', 1),
+(2, 5, '51635595-día-de-san-valentín-corazones-de-papel-abstracto-amor-corazón-para-el-fondo-del-día-de-tarjetas-del-día-de-san-.jpg', 176492, 'resources/files/productos/51635595-día-de-san-valentín-corazones-de-papel-abstracto-amor-corazón-para-el-fondo-del-día-de-tarjetas-del-día-de-san-.jpg', 'asasas', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_menu`
 --
 
@@ -2166,17 +2210,20 @@ CREATE TABLE `tbl_productos` (
   `peso` double DEFAULT NULL,
   `fecha_alta` datetime DEFAULT NULL,
   `stock` double NOT NULL,
-  `id_nominacion` int(11) NOT NULL
+  `id_nominacion` int(11) NOT NULL,
+  `activo` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Dumping data for table `tbl_productos`
 --
 
-INSERT INTO `tbl_productos` (`id_producto`, `nombre`, `precio`, `id_categoria`, `peso`, `fecha_alta`, `stock`, `id_nominacion`) VALUES
-(1, 'Producto001', 12.34, 1, 12, '0000-00-00 00:00:00', 23, 1),
-(2, 'Producto002', 234.56, 1, 12, '2019-08-13 00:00:00', 3, 1),
-(3, 'Producto 003', 12, 1, 67, '2019-08-13 00:00:00', 3, 1);
+INSERT INTO `tbl_productos` (`id_producto`, `nombre`, `precio`, `id_categoria`, `peso`, `fecha_alta`, `stock`, `id_nominacion`, `activo`) VALUES
+(1, 'Producto001', 12.34, 4, 12, '2019-08-23 00:00:00', 23, 2, 0),
+(2, 'Producto002', 234.56, 1, 12, '2019-08-13 00:00:00', 3, 1, 1),
+(3, 'Producto 003', 12, 2, 67, '2019-08-13 00:00:00', 3, 1, 1),
+(4, 'Producto004', 123.45, 4, 45, '2019-08-16 00:00:00', 12, 2, 1),
+(5, 'producto 005', 123, 2, 1212, '2019-08-06 08:17:14', 12, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -2185,16 +2232,16 @@ INSERT INTO `tbl_productos` (`id_producto`, `nombre`, `precio`, `id_categoria`, 
 --
 
 CREATE TABLE `tbl_provincia` (
-  `idProv` int(5) NOT NULL DEFAULT '0',
+  `id_provincia` int(5) NOT NULL DEFAULT '0',
   `provincia` varchar(50) DEFAULT NULL,
-  `idDepa` int(5) DEFAULT NULL
+  `id_departamento` int(5) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `tbl_provincia`
 --
 
-INSERT INTO `tbl_provincia` (`idProv`, `provincia`, `idDepa`) VALUES
+INSERT INTO `tbl_provincia` (`id_provincia`, `provincia`, `id_departamento`) VALUES
 (1, 'CHACHAPOYAS ', 1),
 (2, 'BAGUA', 1),
 (3, 'BONGARA', 1),
@@ -2450,7 +2497,30 @@ INSERT INTO `tbl_telefonos` (`id_telefono`, `id_operador`, `numero_telefono`, `i
 (24, 2, '927458153', 1, 1),
 (25, 2, '927458153', 1, 1),
 (26, 2, '4677', 5, 1),
-(27, 2, '9875421', 5, 1);
+(27, 2, '9875421', 5, 1),
+(28, 2, '261651', 50, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_tienda`
+--
+
+CREATE TABLE `tbl_tienda` (
+  `id_tienda` int(11) NOT NULL,
+  `nombre_tienda` varchar(500) COLLATE utf8_spanish_ci NOT NULL,
+  `direccion` varchar(500) COLLATE utf8_spanish_ci NOT NULL,
+  `id_departamento` int(11) NOT NULL,
+  `id_provincia` int(11) NOT NULL,
+  `id_distrito` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Dumping data for table `tbl_tienda`
+--
+
+INSERT INTO `tbl_tienda` (`id_tienda`, `nombre_tienda`, `direccion`, `id_departamento`, `id_provincia`, `id_distrito`) VALUES
+(1, 'Tienda Surquillo', 'Av Angamos #333', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2466,6 +2536,40 @@ CREATE TABLE `tbl_tipo_comprobante` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_tipo_documento`
+--
+
+CREATE TABLE `tbl_tipo_documento` (
+  `id_tipo` int(11) NOT NULL,
+  `tipo` varchar(200) COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Dumping data for table `tbl_tipo_documento`
+--
+
+INSERT INTO `tbl_tipo_documento` (`id_tipo`, `tipo`) VALUES
+(1, 'DNI'),
+(2, 'RUC'),
+(3, 'PASAPORTE'),
+(4, 'OTROS');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_turno`
+--
+
+CREATE TABLE `tbl_turno` (
+  `id_turno` int(11) NOT NULL,
+  `nombre_turno` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `hora_inicio` time DEFAULT NULL,
+  `hora_fin` time DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_usuario`
 --
 
@@ -2473,19 +2577,28 @@ CREATE TABLE `tbl_usuario` (
   `id_usuario` int(11) NOT NULL,
   `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
   `password` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
-  `id_rol` int(11) NOT NULL
+  `id_rol` int(11) DEFAULT NULL,
+  `id_tienda` int(11) DEFAULT NULL,
+  `id_turno` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Dumping data for table `tbl_usuario`
 --
 
-INSERT INTO `tbl_usuario` (`id_usuario`, `nombre`, `password`, `id_rol`) VALUES
-(9, 'ammiel', 'ammiel', 1);
+INSERT INTO `tbl_usuario` (`id_usuario`, `nombre`, `password`, `id_rol`, `id_tienda`, `id_turno`) VALUES
+(10, 'ammiel', 'ammiel', 1, 1, NULL);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tbl_caja`
+--
+ALTER TABLE `tbl_caja`
+  ADD PRIMARY KEY (`id_caja`),
+  ADD KEY `fk_caja_tienda` (`id_tienda`);
 
 --
 -- Indexes for table `tbl_categoria`
@@ -2497,7 +2610,8 @@ ALTER TABLE `tbl_categoria`
 -- Indexes for table `tbl_clientes`
 --
 ALTER TABLE `tbl_clientes`
-  ADD PRIMARY KEY (`id_cliente`);
+  ADD PRIMARY KEY (`id_cliente`),
+  ADD KEY `fk_cliente_documento` (`id_tipo_documento`);
 
 --
 -- Indexes for table `tbl_comprobante`
@@ -2518,7 +2632,7 @@ ALTER TABLE `tbl_correos`
 -- Indexes for table `tbl_departamento`
 --
 ALTER TABLE `tbl_departamento`
-  ADD PRIMARY KEY (`idDepa`);
+  ADD PRIMARY KEY (`id_departamento`);
 
 --
 -- Indexes for table `tbl_detalle_comprobante`
@@ -2532,7 +2646,7 @@ ALTER TABLE `tbl_detalle_comprobante`
 -- Indexes for table `tbl_distrito`
 --
 ALTER TABLE `tbl_distrito`
-  ADD PRIMARY KEY (`idDist`);
+  ADD PRIMARY KEY (`id_distrito`);
 
 --
 -- Indexes for table `tbl_documento_cliente`
@@ -2540,6 +2654,12 @@ ALTER TABLE `tbl_distrito`
 ALTER TABLE `tbl_documento_cliente`
   ADD PRIMARY KEY (`id_documento`),
   ADD KEY `fk_documento_cliente` (`id_cliente`);
+
+--
+-- Indexes for table `tbl_documento_producto`
+--
+ALTER TABLE `tbl_documento_producto`
+  ADD PRIMARY KEY (`id_documento`);
 
 --
 -- Indexes for table `tbl_menu`
@@ -2572,7 +2692,7 @@ ALTER TABLE `tbl_productos`
 -- Indexes for table `tbl_provincia`
 --
 ALTER TABLE `tbl_provincia`
-  ADD PRIMARY KEY (`idProv`);
+  ADD PRIMARY KEY (`id_provincia`);
 
 --
 -- Indexes for table `tbl_rol`
@@ -2589,21 +2709,47 @@ ALTER TABLE `tbl_telefonos`
   ADD KEY `fk_operador` (`id_operador`);
 
 --
+-- Indexes for table `tbl_tienda`
+--
+ALTER TABLE `tbl_tienda`
+  ADD PRIMARY KEY (`id_tienda`);
+
+--
 -- Indexes for table `tbl_tipo_comprobante`
 --
 ALTER TABLE `tbl_tipo_comprobante`
   ADD PRIMARY KEY (`id_tipo`);
 
 --
+-- Indexes for table `tbl_tipo_documento`
+--
+ALTER TABLE `tbl_tipo_documento`
+  ADD PRIMARY KEY (`id_tipo`);
+
+--
+-- Indexes for table `tbl_turno`
+--
+ALTER TABLE `tbl_turno`
+  ADD PRIMARY KEY (`id_turno`);
+
+--
 -- Indexes for table `tbl_usuario`
 --
 ALTER TABLE `tbl_usuario`
   ADD PRIMARY KEY (`id_usuario`),
-  ADD KEY `fk_rol` (`id_rol`);
+  ADD KEY `fk_rol` (`id_rol`),
+  ADD KEY `fk_usuario_tienda` (`id_tienda`),
+  ADD KEY `fk_usuario_turno` (`id_turno`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `tbl_caja`
+--
+ALTER TABLE `tbl_caja`
+  MODIFY `id_caja` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tbl_categoria`
@@ -2615,7 +2761,7 @@ ALTER TABLE `tbl_categoria`
 -- AUTO_INCREMENT for table `tbl_clientes`
 --
 ALTER TABLE `tbl_clientes`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `tbl_comprobante`
@@ -2642,6 +2788,12 @@ ALTER TABLE `tbl_documento_cliente`
   MODIFY `id_documento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `tbl_documento_producto`
+--
+ALTER TABLE `tbl_documento_producto`
+  MODIFY `id_documento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `tbl_menu`
 --
 ALTER TABLE `tbl_menu`
@@ -2663,7 +2815,7 @@ ALTER TABLE `tbl_operador`
 -- AUTO_INCREMENT for table `tbl_productos`
 --
 ALTER TABLE `tbl_productos`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tbl_rol`
@@ -2675,7 +2827,13 @@ ALTER TABLE `tbl_rol`
 -- AUTO_INCREMENT for table `tbl_telefonos`
 --
 ALTER TABLE `tbl_telefonos`
-  MODIFY `id_telefono` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_telefono` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT for table `tbl_tienda`
+--
+ALTER TABLE `tbl_tienda`
+  MODIFY `id_tienda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_tipo_comprobante`
@@ -2684,14 +2842,38 @@ ALTER TABLE `tbl_tipo_comprobante`
   MODIFY `id_tipo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `tbl_tipo_documento`
+--
+ALTER TABLE `tbl_tipo_documento`
+  MODIFY `id_tipo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `tbl_turno`
+--
+ALTER TABLE `tbl_turno`
+  MODIFY `id_turno` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tbl_usuario`
 --
 ALTER TABLE `tbl_usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `tbl_caja`
+--
+ALTER TABLE `tbl_caja`
+  ADD CONSTRAINT `fk_caja_tienda` FOREIGN KEY (`id_tienda`) REFERENCES `tbl_tienda` (`id_tienda`);
+
+--
+-- Constraints for table `tbl_clientes`
+--
+ALTER TABLE `tbl_clientes`
+  ADD CONSTRAINT `fk_cliente_documento` FOREIGN KEY (`id_tipo_documento`) REFERENCES `tbl_tipo_documento` (`id_tipo`);
 
 --
 -- Constraints for table `tbl_comprobante`
@@ -2743,7 +2925,9 @@ ALTER TABLE `tbl_telefonos`
 -- Constraints for table `tbl_usuario`
 --
 ALTER TABLE `tbl_usuario`
-  ADD CONSTRAINT `fk_rol` FOREIGN KEY (`id_rol`) REFERENCES `tbl_rol` (`id_rol`);
+  ADD CONSTRAINT `fk_rol` FOREIGN KEY (`id_rol`) REFERENCES `tbl_rol` (`id_rol`),
+  ADD CONSTRAINT `fk_usuario_tienda` FOREIGN KEY (`id_tienda`) REFERENCES `tbl_tienda` (`id_tienda`),
+  ADD CONSTRAINT `fk_usuario_turno` FOREIGN KEY (`id_turno`) REFERENCES `tbl_turno` (`id_turno`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
